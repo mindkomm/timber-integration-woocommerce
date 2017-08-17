@@ -10,7 +10,7 @@ When working with WooCommerce you’ll want to stay as compatible to updates to 
 ## Installation
 
 1. Activate the plugin.
-2. Add a file `inc/woocommerce.php` to your theme with the following contents:
+2. Add a file `inc/woocommerce.php` to your theme with the following contents:  
     ```php
     <?php
     
@@ -38,7 +38,7 @@ When working with WooCommerce you’ll want to stay as compatible to updates to 
     
     new WooCommerce_Custom();
     ```
-3. Add a file `woocommerce.php` to your theme with the following contents:
+3. Add a file `woocommerce.php` to your theme with the following contents:  
     ```
     <?php
     /**
