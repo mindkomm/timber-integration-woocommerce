@@ -1,0 +1,7 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Mind\\Timber\\Integrations\\WooCommerce\\": "src/Mind/Timber/Integrations/WooCommerce"
+    }
+  }
+}
