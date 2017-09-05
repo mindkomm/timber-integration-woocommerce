@@ -33,6 +33,8 @@ class WooCommerce {
 	 */
 	public static $subfolder;
 
+	public static $context_cache = array();
+
 	/**
 	 * WooCommerce constructor.
 	 *
@@ -58,10 +60,13 @@ class WooCommerce {
 	 * Setup hooks used in this integration.
 	 */
 	public function setup_hooks() {
-		// For conditional functions like `is_woocommerce()` to work, we need too hook into the 'wp' action.
+		// For conditional functions like `is_woocommerce()` to work, we need to hook into the 'wp' action.
 		add_action( 'wp', array( $this, 'setup_classes' ), 20 );
 
 		add_filter( 'wc_get_template', array( $this, 'maybe_render_twig_partial' ), 10, 3 );
+
+		// Add WooCommerce context data to normal context
+		add_filter( 'timber/context', array( __CLASS__, 'get_woocommerce_context' ) );
 	}
 
 	/**
@@ -229,5 +234,19 @@ class WooCommerce {
 		}, $templates );
 
 		Timber::render( $templates, $context );
+	}
+
+	public static function get_woocommerce_context( $context = array() ) {
+		if ( empty( self::$context_cache ) ) {
+			self::$context_cache = [
+				'cart' => WC()->cart,
+			];
+
+			self::$context_cache = apply_filters( 'timber/woocommerce/context', self::$context_cache );
+		}
+
+		$context = array_merge( $context, self::$context_cache );
+
+		return $context;
 	}
 }
