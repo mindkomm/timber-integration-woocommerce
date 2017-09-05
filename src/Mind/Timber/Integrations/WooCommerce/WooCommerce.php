@@ -153,7 +153,8 @@ class WooCommerce {
 		// Loop through args and add to collections array if it’s an array of WC_Product objects
 		foreach ( $args as $key => $arg ) {
 			// Bailout if not array or not array of WC_Product objects
-			if ( ! is_array( $arg ) || ! is_object( $arg[0] ) || ! is_a( $arg[0], 'WC_Product' ) ) {
+			if ( ! is_array( $arg ) || empty( $arg ) || ! isset( $arg[0] )
+				|| ! is_object( $arg[0] ) || ! is_a( $arg[0], 'WC_Product' ) ) {
 				continue;
 			}
 
