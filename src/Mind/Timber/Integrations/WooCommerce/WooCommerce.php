@@ -128,11 +128,18 @@ class WooCommerce {
 
 		// If a file was found, render that file with the given args, otherwise, return the default location.
 		if ( $file ) {
+			global $product;
+
 			// We can access the context here without performance loss, because it was already cached.
 			$context = Timber::get_context();
 
 			// Add the arguments for the WooCommerce template
 			$context['wc'] = self::maybe_convert_to_collection( $args );
+
+			// Add current product to context
+			if ( is_a( $product, 'WC_Product' ) ) {
+				$context['product'] = $product;
+			}
 
 			Timber::render( $file, $context );
 
