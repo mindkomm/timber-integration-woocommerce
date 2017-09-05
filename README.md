@@ -63,7 +63,7 @@ Add a file `woocommerce.php` to the root your theme with the following contents:
 \Mind\Timber\Integrations\WooCommerce\WooCommerce::render_default_template();
 ```
 
-The function `render_default_template()` makes it possible for you to render the default files used by WooCommerce. When working with WooCommerce, you’re probably used to have a `woocommerce/single-product.php` in your theme. You don’t need that anymore. You can now create a file `woocommerce/single-product.twig` in your Twig views folder directly.
+The function `render_default_template()` makes it possible for you to render the default files used by WooCommerce. When working with WooCommerce, you’re probably used to have a `woocommerce/single-product.php` in your theme. You don’t need that anymore. You can now create a file `views/woocommerce/single-product.twig` in your Twig views folder directly.
 
 ## Automatic Twig partial selection
 
@@ -123,6 +123,8 @@ class My_WooCommerce_Cart {
         return $fragments;
     }
 }
+
+new My_WooCommerce_Cart();
 ```
 
 Don’t forget to require it in your **functions.php** file.
