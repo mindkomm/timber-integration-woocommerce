@@ -1,0 +1,25 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+<div class="container">
+    {% include 'page-title.twig' with { title: title } %}
+
+    {% do action('woocommerce_before_main_content') %}
+    {% do action('woocommerce_before_shop_loop') %}
+
+    {% if posts %}
+        <div class="row list-products">
+            {% for post in posts %}
+                <div class="col-sm-4 list-items">
+                    {% include 'woocommerce/teaser-product.twig' %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% do action('woocommerce_after_shop_loop') %}
+    {% do action('woocommerce_after_main_content') %}
+</div>
+
+{% endblock %}

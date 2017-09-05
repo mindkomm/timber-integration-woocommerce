@@ -1,0 +1,20 @@
+<div {{ fn('post_class', ['list-item', 'teaser'] ) }}>
+
+    <div class="teaser-image">
+        {% if post.thumbnail %}
+            <a href="{{ post.link }}">
+                <img src="{{ post.thumbnail.src('thumbnail')) }}" />
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="teaser-content">
+        {% do action('woocommerce_before_shop_loop_item_title') %}
+
+        <h3 class="heading-teaser"><a href="{{ post.link }}">{{ post.title }}</a></h3>
+
+        {% do action( 'woocommerce_after_shop_loop_item_title' ) %}
+        {% do action( 'woocommerce_after_shop_loop_item' ) %}
+    </div>
+
+</div>

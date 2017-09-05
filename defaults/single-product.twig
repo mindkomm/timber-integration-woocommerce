@@ -1,0 +1,29 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+<div class="container">
+    <div id="product-{{ post.id }}" {{ fn('post_class', ['product']) }}>
+        {% do action('woocommerce_before_single_product') %}
+
+        {% include 'page-title.twig' %}
+
+        {% if post.thumbnail %}
+            <img class="img-responsive" src="{{ post.thumbnail.src('thumbnail') }}">
+        {% endif %}
+
+        {% do action('woocommerce_before_single_product_summary') %}
+
+        <div class="product-summary">
+            {% do action( 'woocommerce_single_product_summary' ) %}
+
+            <div class="content">{{ post.content }}</div>
+        </div>
+
+        {% do action('woocommerce_after_single_product_summary') %}
+    </div>
+
+    {% do action('woocommerce_after_single_product') %}
+</div>
+
+{% endblock %}
