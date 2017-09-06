@@ -219,6 +219,8 @@ class WooCommerce {
 			if ( is_product_taxonomy() ) {
 				$term = get_queried_object();
 
+				$context['term'] = $term;
+
 				// WooCommerce defaults
 				$templates[] = "taxonomy-{$term->taxonomy}-{$term->slug}.twig";
 				$templates[] = "taxonomy-{$term->taxonomy}.twig";
