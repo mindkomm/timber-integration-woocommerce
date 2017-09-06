@@ -3,9 +3,12 @@
 {% block content %}
 
 <div class="container">
-    {% include 'page-title.twig' with { title: title } %}
-
     {% do action('woocommerce_before_main_content') %}
+
+    <h1 class="heading-1" id="main-title">{{ title }}</h1>
+
+    {% do action('woocommerce_archive_description') %}
+
     {% do action('woocommerce_before_shop_loop') %}
 
     {% if posts %}
