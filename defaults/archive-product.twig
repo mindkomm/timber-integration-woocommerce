@@ -5,6 +5,8 @@
 <div class="container">
     {% include 'page-title.twig' with { title: title } %}
 
+    {% do action('woocommerce_archive_description') %}
+
     {% do action('woocommerce_before_main_content') %}
     {% do action('woocommerce_before_shop_loop') %}
 
