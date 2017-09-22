@@ -91,6 +91,10 @@ The integration adds some context variables to the global Timber context. This m
 
 - `cart` – The WooCommerce cart object.
 
+### Template based context
+
+- `term` – Will be set when a shop taxonomy term is displayed.
+
 ## Cart
 
 If you want to display a "mini cart" that displays the cart contents count and total price, you can [use the `woocommerce_add_to_cart_fragments`](https://docs.woocommerce.com/document/show-cart-contents-total/) hook. Here’s a class you can save in `inc/woocommerce/WooCommerce_Cart.php`:

@@ -5,7 +5,6 @@ namespace Mind\Timber\Integrations\WooCommerce;
 use Timber\Loader;
 use Timber\LocationManager;
 use Timber\PostCollection;
-use Timber\Term;
 use Timber\Timber;
 
 /**
@@ -220,7 +219,7 @@ class WooCommerce {
 			if ( is_product_taxonomy() ) {
 				$term = get_queried_object();
 
-				$context['term'] = new Term($term );
+				$context['term'] = $term;
 
 				// WooCommerce defaults
 				$templates[] = "taxonomy-{$term->taxonomy}-{$term->slug}.twig";
@@ -256,7 +255,7 @@ class WooCommerce {
 		}
 
 		$context = array_merge( $context, self::$context_cache );
-		$context['cart'] = WC()->cart;
+
 		return $context;
 	}
 
@@ -270,10 +269,5 @@ class WooCommerce {
 		remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
 		remove_action( 'woocommerce_product_thumbnails', 'woocommerce_show_product_thumbnails', 20 );
 		remove_action( 'woocommerce_before_subcategory_title', 'woocommerce_subcategory_thumbnail', 10 );
-		remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
-		remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10 );
-		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
-		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
-		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
 	}
 }
