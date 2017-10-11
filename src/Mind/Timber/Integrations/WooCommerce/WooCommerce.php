@@ -5,6 +5,7 @@ namespace Mind\Timber\Integrations\WooCommerce;
 use Timber\Loader;
 use Timber\LocationManager;
 use Timber\PostCollection;
+use Timber\Term;
 use Timber\Timber;
 
 /**
@@ -219,7 +220,7 @@ class WooCommerce {
 			if ( is_product_taxonomy() ) {
 				$term = get_queried_object();
 
-				$context['term'] = $term;
+				$context['term'] = new Term($term );
 
 				// WooCommerce defaults
 				$templates[] = "taxonomy-{$term->taxonomy}-{$term->slug}.twig";
@@ -255,7 +256,7 @@ class WooCommerce {
 		}
 
 		$context = array_merge( $context, self::$context_cache );
-
+		$context['cart'] = WC()->cart;
 		return $context;
 	}
 
