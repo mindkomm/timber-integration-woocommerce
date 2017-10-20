@@ -43,11 +43,12 @@ class Product extends \Timber\Post {
 	/**
 	 * Get a WooCommerce product attribute by slug.
 	 *
-	 * @param $slug
+	 * @param string $slug          The name of the attribute to get.
+	 * @param bool   $convert_terms Whether to convert terms to Timber\Term objects.
 	 *
 	 * @return array|false
 	 */
-	public function get_product_attribute( $slug ) {
+	public function get_product_attribute( $slug, $convert_terms = true ) {
 		$attributes = $this->product->get_attributes();
 
 		if ( ! $attributes || empty( $attributes ) ) {
@@ -80,9 +81,11 @@ class Product extends \Timber\Post {
 			);
 
 			// Turn WP_Terms into instances of Timber\Term
-			$terms = array_map( function( $term ) {
-				return new Term( $term );
-			}, $terms );
+			if ( $convert_terms ) {
+				$terms = array_map( function( $term ) {
+					return new Term( $term );
+				}, $terms );
+			}
 
 			return $terms;
 		}
