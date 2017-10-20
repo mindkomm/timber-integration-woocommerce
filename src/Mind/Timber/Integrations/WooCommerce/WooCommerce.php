@@ -74,6 +74,9 @@ class WooCommerce {
 	 * Setup classes Timber should use when in WooCommerce context.
 	 */
 	public function setup_classes() {
+		/**
+		 * TODO: What if posts of other posts types need to be displayed on the same page?
+		 */
 		if ( ! is_woocommerce() ) {
 			return;
 		}
@@ -155,7 +158,7 @@ class WooCommerce {
 	}
 
 	/**
-	 * Convert arrays of WooCommerce product object to PostCollections of Timber Product posts.
+	 * Convert arrays of WooCommerce product objects to PostCollections of Timber Product posts.
 	 *
 	 * @param array $args Template arguments
 	 * @return array
@@ -220,7 +223,7 @@ class WooCommerce {
 			if ( is_product_taxonomy() ) {
 				$term = get_queried_object();
 
-				$context['term'] = new Term($term );
+				$context['term'] = new Term( $term );
 
 				// WooCommerce defaults
 				$templates[] = "taxonomy-{$term->taxonomy}-{$term->slug}.twig";
@@ -248,6 +251,9 @@ class WooCommerce {
 
 	public static function get_woocommerce_context( $context = array() ) {
 		if ( empty( self::$context_cache ) ) {
+			/**
+			 * Always add cart to context
+			 */
 			self::$context_cache = [
 				'cart' => WC()->cart,
 			];
@@ -256,7 +262,7 @@ class WooCommerce {
 		}
 
 		$context = array_merge( $context, self::$context_cache );
-		$context['cart'] = WC()->cart;
+
 		return $context;
 	}
 
