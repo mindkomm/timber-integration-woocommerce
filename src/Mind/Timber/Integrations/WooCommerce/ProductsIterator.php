@@ -24,6 +24,15 @@ class ProductsIterator extends \ArrayIterator {
 		$post = parent::current();
 		$product = wc_get_product( $post->ID );
 
+		/**
+		 * woocommerce_shop_loop hook.
+		 *
+		 * Used to set the structured for a post, which is then inserted into the footer.
+		 *
+		 * @hooked WC_Structured_Data::generate_product_data() - 10
+		 */
+		do_action( 'woocommerce_shop_loop' );
+
 		return $post;
 	}
 }
