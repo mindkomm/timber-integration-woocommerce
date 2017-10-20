@@ -13,7 +13,13 @@
 
     {% if posts %}
         <div class="row list-products">
-            {% for post in posts %}
+
+            {#
+                Depending on your WooCommerce display settings, the `woocommerce_product_subcategories` function
+                might reset the $wp_query global. By calling `have_posts()`, we check if there are posts we can
+                display.
+            #}
+            {% for post in posts if fn('have_posts') %}
                 <div class="col-sm-4 list-items">
                     {% include 'woocommerce/teaser-product.twig' %}
                 </div>

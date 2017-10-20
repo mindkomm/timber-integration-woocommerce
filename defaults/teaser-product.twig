@@ -1,6 +1,6 @@
 <div {{ fn('post_class', ['list-item', 'teaser'] ) }}>
 
-    <div class="teaser-image">
+    <div class="teaser-image-container">
         {% if post.thumbnail %}
             <a href="{{ post.link }}">
                 <img src="{{ post.thumbnail.src('thumbnail') }}" />
@@ -13,8 +13,12 @@
 
         <h3 class="heading-teaser"><a href="{{ post.link }}">{{ post.title }}</a></h3>
 
-        {% do action( 'woocommerce_after_shop_loop_item_title' ) %}
-        {% do action( 'woocommerce_after_shop_loop_item' ) %}
+        {% do action('woocommerce_after_shop_loop_item_title') %}
+
+        {#
+            The second parameter is currently needed to prevent an issue with Timber action calls.
+        #}
+        {% do action('woocommerce_after_shop_loop_item', []) %}
     </div>
 
 </div>
