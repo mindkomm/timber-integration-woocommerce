@@ -150,6 +150,7 @@ class WooCommerce {
 			// Add current product to context
 			if ( is_a( $product, 'WC_Product' ) ) {
 				$context['product'] = $product;
+				$context['post_id'] = $product->get_id( 'id' );
 			}
 
 			Timber::render( $file, $context );
