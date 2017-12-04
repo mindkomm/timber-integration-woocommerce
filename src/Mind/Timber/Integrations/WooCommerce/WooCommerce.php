@@ -145,7 +145,7 @@ class WooCommerce {
 			$context = Timber::get_context();
 
 			// Add the arguments for the WooCommerce template
-			$context['wc'] = self::maybe_convert_to_collection( $args );
+			$context['wc'] = self::convert_objects( $args );
 
 			// Add current product to context
 			if ( is_a( $product, 'WC_Product' ) ) {
@@ -162,6 +162,19 @@ class WooCommerce {
 		}
 
 		return $located;
+	}
+
+	public static function convert_objects( $args ) {
+		// Convert WP object to Timber objects
+		foreach ( $args as &$arg ) {
+			if ( is_a( $arg, 'WP_Term' ) ) {
+				$arg = new \Timber\Term( $arg );
+			}
+		}
+
+		$args = self::maybe_convert_to_collection( $args );
+
+		return $args;
 	}
 
 	/**
