@@ -153,6 +153,8 @@ class WooCommerce {
 				$context['post_id'] = $product->get_id( 'id' );
 			}
 
+			$context = apply_filters( 'timber/integration/woocommerce/twig/render', $context, $product );
+
 			Timber::render( $file, $context );
 
 			/**
