@@ -7,7 +7,7 @@
  * Author URI: https://www.mind.ch
  * License: GNU General Public License v2.0 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Version: 0.1.0
+ * Version: 0.2.0
  */
 namespace Mind;
 
