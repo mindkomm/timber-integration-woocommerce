@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container">
-    <div id="product-{{ post.id }}" {{ fn('post_class', ['product']) }}>
+    <div id="product-{{ post.id }}" {{ fn('post_class', ['product', 'product--' ~ post.product.get_type()]) }}>
         {% do action('woocommerce_before_single_product') %}
 
         {% include 'page-title.twig' %}
