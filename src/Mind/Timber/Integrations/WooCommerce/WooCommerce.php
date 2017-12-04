@@ -232,7 +232,11 @@ class WooCommerce {
 		$templates = [];
 
 		if ( is_singular( 'product' ) ) {
-			$context['post'] = Timber::get_post();
+			$post = new Post();
+			$context['post'] = $post;
+
+			// Timber goodies
+			$templates[] = "single-{$post->post_name}.twig";
 
 			// WooCommerce default
 			$templates[] = 'single-product.twig';
