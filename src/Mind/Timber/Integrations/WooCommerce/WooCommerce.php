@@ -68,6 +68,8 @@ class WooCommerce {
 
 		// Add WooCommerce context data to normal context
 		add_filter( 'timber/context', array( __CLASS__, 'get_woocommerce_context' ) );
+
+		add_action( 'timber/twig/functions', array( $this, 'add_timber_functions' ) );
 	}
 
 	/**
@@ -264,6 +266,21 @@ class WooCommerce {
 		$context = array_merge( $context, self::$context_cache );
 
 		return $context;
+	}
+
+	/**
+	 * Make function available in Twig.
+	 *
+	 * @param \Twig_Environment $twig Twig Environment
+	 *
+	 * @return mixed
+	 */
+	public function add_timber_functions( $twig ) {
+		$twig->addFunction( new \Twig_Function( 'TimberProduct', function( $pid ) {
+			return new self::$product_class( $pid );
+		} ) );
+
+		return $twig;
 	}
 
 	/**
