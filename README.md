@@ -7,6 +7,8 @@ When working with WooCommerce you’ll want to stay as compatible to updates to 
 - Work with actions and filters provided by WooCommerce (or the Storefront theme) as much as you can.
 - Replace functions where you need them.
 
+- Never remove a hook from a frontend template. Unhook functionalities you don’t need through `remove_filter` and `remove_action`.
+
 ## Installation
 
 Activate the plugin.
@@ -211,4 +213,14 @@ You would then define a function in PHP that takes in the posts and filters them
 
 ```php
 return new \Timber\PostCollection( $filtered_posts );
+```
+
+## Get a product post by ID
+
+```php
+new \Mind\Timber\Integrations\WooCommerce\Product( 354 );
+```
+
+```twig
+{% set product = TimberProduct(354) %}
 ```
