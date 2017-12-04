@@ -4,6 +4,7 @@ namespace Mind\Timber\Integrations\WooCommerce;
 
 use Timber\Loader;
 use Timber\LocationManager;
+use Timber\Post;
 use Timber\PostCollection;
 use Timber\Term;
 use Timber\Timber;
@@ -71,7 +72,7 @@ class WooCommerce {
 
 		add_filter( 'wc_get_template', array( $this, 'maybe_render_twig_partial' ), 10, 3 );
 
-		// Add WooCommerce context data to normal context
+		// Add WooCommerce context data to normal context.
 		add_filter( 'timber/context', array( __CLASS__, 'get_woocommerce_context' ) );
 
 		add_action( 'timber/twig/functions', array( $this, 'add_timber_functions' ) );
@@ -278,9 +279,7 @@ class WooCommerce {
 
 	public static function get_woocommerce_context( $context = array() ) {
 		if ( empty( self::$context_cache ) ) {
-			/**
-			 * Always add cart to context
-			 */
+			// Always add cart to context
 			self::$context_cache = [
 				'cart' => WC()->cart,
 			];
