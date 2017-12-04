@@ -42,6 +42,11 @@ class WooCommerce {
 	 * @param array $args Array of arguments for the Integration.
 	 */
 	public function __construct( $args = array() ) {
+		// Bailout in backend
+		if ( is_admin() ) {
+			return;
+		}
+
 		$defaults = array(
 			'subfolder'        => 'woocommerce',
 			'product_class'    => '\Mind\Timber\Integrations\WooCommerce\Product',
