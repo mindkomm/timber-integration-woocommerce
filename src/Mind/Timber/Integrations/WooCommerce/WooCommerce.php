@@ -4,7 +4,6 @@ namespace Mind\Timber\Integrations\WooCommerce;
 
 use Timber\Loader;
 use Timber\LocationManager;
-use Timber\Post;
 use Timber\PostCollection;
 use Timber\Term;
 use Timber\Timber;
@@ -233,7 +232,7 @@ class WooCommerce {
 		$templates = [];
 
 		if ( is_singular( 'product' ) ) {
-			$post = new Post();
+			$post            = new Product();
 			$context['post'] = $post;
 
 			// Timber goodies
