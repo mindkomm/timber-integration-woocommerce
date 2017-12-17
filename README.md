@@ -224,3 +224,11 @@ new \Mind\Timber\Integrations\WooCommerce\Product( 354 );
 ```twig
 {% set product = TimberProduct(354) %}
 ```
+
+## Varia
+
+You can still use the `woocommerce_before_template_part` and `woocommerce_after_template_part`.
+
+## Todo
+
+- Add filter to filter current menu item classes for shop page.
