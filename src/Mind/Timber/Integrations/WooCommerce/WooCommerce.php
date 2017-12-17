@@ -129,13 +129,13 @@ class WooCommerce {
 		 *
 		 * TODO: Is str_replace() too naive here?
 		 */
-		$template_name = self::$subfolder . str_replace( '.php', '.twig', $template_name );
+		$template_name_twig = self::$subfolder . str_replace( '.php', '.twig', $template_name );
 
 		// Get loader an check if file exists.
 		// TODO: Is this now the proper way to initialize and use a loader? Should a new loader be initialized here or would it be better to initialize it in the constructor?
 		$caller = LocationManager::get_calling_script_dir( 1 );
 		$loader = new Loader( $caller );
-		$file   = $loader->choose_template( $template_name );
+		$file   = $loader->choose_template( $template_name_twig );
 
 		// If a file was found, render that file with the given args, otherwise, return the default location.
 		if ( $file ) {
@@ -153,7 +153,7 @@ class WooCommerce {
 				$context['post_id'] = $product->get_id( 'id' );
 			}
 
-			$context = apply_filters( 'timber/integration/woocommerce/twig/render', $context, $product );
+			$context = apply_filters( 'timber/integration/woocommerce/template/context', $context, $template_name, $template_name_twig, $product );
 
 			Timber::render( $file, $context );
 
