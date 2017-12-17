@@ -224,6 +224,8 @@ class WooCommerce {
 	 *
 	 * If you have your own solution going on or need to do more checks, you don’t have to call this function.
 	 *
+	 * TODO: Add functionality for product tags
+	 *
 	 * @api
 	 */
 	public static function render_default_template() {
@@ -232,8 +234,7 @@ class WooCommerce {
 		$templates = [];
 
 		if ( is_singular( 'product' ) ) {
-			$post            = new Product();
-			$context['post'] = $post;
+			$post = $context['post'];
 
 			// Timber goodies
 			$templates[] = "single-{$post->post_name}.twig";
@@ -248,9 +249,7 @@ class WooCommerce {
 			$context['title'] = woocommerce_page_title( false );
 
 			if ( is_product_taxonomy() ) {
-				$term = get_queried_object();
-
-				$context['term'] = new Term( $term );
+				$term = $context['term'];
 
 				// WooCommerce defaults
 				$templates[] = "taxonomy-{$term->taxonomy}-{$term->slug}.twig";
@@ -278,12 +277,25 @@ class WooCommerce {
 
 	public static function get_woocommerce_context( $context = array() ) {
 		if ( empty( self::$context_cache ) ) {
-			// Always add cart to context
-			self::$context_cache = [
-				'cart' => WC()->cart,
-			];
+			$woocommerce_context = [];
 
-			self::$context_cache = apply_filters( 'timber/woocommerce/context', self::$context_cache );
+			if ( is_singular( 'product' ) ) {
+				$woocommerce_context['post'] = new Product();
+			} elseif ( is_archive() ) {
+				// Add shop page to context
+				if ( is_shop() ) {
+					$woocommerce_context['post'] = new \Timber\Post( wc_get_page_id( 'shop' ) );
+				}
+
+				if ( is_product_taxonomy() ) {
+					$woocommerce_context['term'] = new Term( get_queried_object() );
+				}
+			}
+
+			// Always add cart to context
+			$woocommerce_context['cart'] = WC()->cart;
+
+			self::$context_cache = apply_filters( 'timber/woocommerce/context', $woocommerce_context );
 		}
 
 		$context = array_merge( $context, self::$context_cache );
