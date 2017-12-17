@@ -37,7 +37,30 @@ class Product extends \Timber\Post {
 			$product = wc_get_product( $this->ID );
 		}
 
+		/**
+		 * Filters the WooCommerce product
+		 */
+		$product = apply_filters( 'timber/integration/woocommerce/product', $product, $post );
+
 		$this->product = $product;
+	}
+
+	/**
+	 * Get the first assigned product category.
+	 *
+	 * @return bool|\Timber\Term
+	 */
+	public function category() {
+		$categories = $this->product->get_category_ids();
+
+		if ( $categories ) {
+			$category = reset( $categories );
+			$category = new Term( $category );
+
+			return $category;
+		}
+
+		return false;
 	}
 
 	/**
