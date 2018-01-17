@@ -29,7 +29,7 @@ class Product extends \Timber\Post {
 		 * In that case, get the post ID from the product and then let Timber get the post through the parent
 		 * constructor of this class.
 		 */
-		if ( is_a( $post, 'WC_Product' ) ) {
+		if ( $post instanceof \WC_Product ) {
 			parent::__construct( $post->get_id() );
 			$product = $post;
 		} else {

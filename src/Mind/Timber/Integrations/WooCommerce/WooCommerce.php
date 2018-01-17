@@ -148,7 +148,7 @@ class WooCommerce {
 			$context['wc'] = self::convert_objects( $args );
 
 			// Add current product to context
-			if ( is_a( $product, 'WC_Product' ) ) {
+			if ( $product instanceof \WC_Product ) {
 				$context['product'] = $product;
 				$context['post_id'] = $product->get_id( 'id' );
 			}
@@ -170,7 +170,7 @@ class WooCommerce {
 	public static function convert_objects( $args ) {
 		// Convert WP object to Timber objects
 		foreach ( $args as &$arg ) {
-			if ( is_a( $arg, 'WP_Term' ) ) {
+			if ( $arg instanceof \WP_Term ) {
 				$arg = new \Timber\Term( $arg );
 			}
 		}
