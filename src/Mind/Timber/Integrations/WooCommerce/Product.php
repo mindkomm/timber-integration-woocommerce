@@ -21,8 +21,6 @@ class Product extends \Timber\Post {
 	 * @param mixed $post A post object or an object of class WC_Product or a class that inherits from WC_Product.
 	 */
 	public function __construct( $post = null ) {
-		global $product;
-
 		/**
 		 * Check if the object is an instance of WC_Product or inherits from WC_Product.
 		 *
