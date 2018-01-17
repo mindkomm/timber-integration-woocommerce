@@ -150,7 +150,7 @@ class WooCommerce {
 			// Add current product to context
 			if ( $product instanceof \WC_Product ) {
 				$context['product'] = $product;
-				$context['post_id'] = $product->get_id( 'id' );
+				$context['post_id'] = $product->get_id();
 			}
 
 			$context = apply_filters( 'timber/integration/woocommerce/template/context', $context, $template_name, $template_name_twig, $product );
