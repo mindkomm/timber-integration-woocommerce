@@ -25,13 +25,17 @@ class ProductsIterator extends \ArrayIterator {
 		$product = wc_get_product( $post->ID );
 
 		/**
-		 * woocommerce_shop_loop hook.
+		 * Generate Structured Data for archives.
 		 *
-		 * Used to set the structured for a post, which is then inserted into the footer.
+		 * Used to set the structured data for a post archive page, which is then inserted into the footer.
+		 * This is only run on archive pages, where a woocommerce_before_shop_loop exists. For singular product
+		 * pages, WooCommerce uses the `woocommerce_single_product_summary` hook to generate data.
 		 *
 		 * @hooked WC_Structured_Data::generate_product_data() - 10
 		 */
-		do_action( 'woocommerce_shop_loop' );
+		if ( ! is_singular( 'product' ) && did_action( 'woocommerce_before_shop_loop' ) > 0 ) {
+			do_action( 'woocommerce_shop_loop' );
+		}
 
 		return $post;
 	}
