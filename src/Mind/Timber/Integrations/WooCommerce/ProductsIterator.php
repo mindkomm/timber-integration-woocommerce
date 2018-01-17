@@ -19,10 +19,11 @@ class ProductsIterator extends \ArrayIterator {
 	 * @return \Timber\Post
 	 */
 	public function current() {
-		global $post, $product;
-
 		$post = parent::current();
-		$product = wc_get_product( $post->ID );
+
+		// Setup the $product global
+		// TODO: when wc_setup_product_data() uses get_post(), is the data cached?
+		wc_setup_product_data( $post->ID );
 
 		/**
 		 * Generate Structured Data for archives.
