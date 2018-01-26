@@ -13,27 +13,35 @@ use Timber\Timber;
  *
  * Tries to make it as easy as possible to work with WooCommerce when using Timber.
  *
- * When accessing WooCommerce product posts, they need to be returned in a Timber\PostCollection that can be looped
- * over with a custom iterator that automatically sets the $product global for each product.
- *
  * @package Timber\Integrations\WooCommerce
  */
 class WooCommerce {
 	/**
-	 * @var string Class to use for WooCommerce Product posts
+	 * Class to use for WooCommerce Product posts.
+	 *
+	 * @var string Class name.
 	 */
 	public static $product_class;
 
 	/**
-	 * @var string Class to use when iterating over arrays of WooCommerce product posts.
+	 * Class to use when iterating over arrays of WooCommerce product posts.
+	 *
+	 * @var string Class name.
 	 */
 	public static $product_iterator;
 
 	/**
-	 * @var string The subfolder to use in the Twig template file folder.
+	 * The subfolder to use in the Twig template file folder.
+	 *
+	 * @var string Subfolder name.
 	 */
 	public static $subfolder;
 
+	/**
+	 * Storage for context cache.
+	 *
+	 * @var array Context cache.
+	 */
 	public static $context_cache = array();
 
 	/**
@@ -126,7 +134,7 @@ class WooCommerce {
 		 */
 		$template_name_twig = self::$subfolder . str_replace( '.php', '.twig', $template_name );
 
-		// Get loader an check if file exists.
+		// Get loader and check if file exists.
 		// TODO: Is this now the proper way to initialize and use a loader? Should a new loader be initialized here or would it be better to initialize it in the constructor?
 		$caller = LocationManager::get_calling_script_dir( 1 );
 		$loader = new Loader( $caller );
