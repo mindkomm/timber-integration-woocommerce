@@ -156,7 +156,7 @@ class WooCommerce {
 				$context['post_id'] = $product->get_id();
 			}
 
-			$context = apply_filters( 'timber/integration/woocommerce/template/context', $context, $template_name, $template_name_twig, $product );
+			$context = apply_filters( 'timber/woocommerce/template/context', $context, $template_name, $template_name_twig, $product );
 
 			Timber::render( $file, $context );
 
