@@ -1,4 +1,29 @@
 {
+  "name": "timber/timber-integration-woocommerce",
+  "type": "library",
+  "description": "WooCommerce integration for Timber.",
+  "keywords": [
+    "timber",
+    "twig",
+    "integration",
+    "woocommerce"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Lukas Gaechter",
+      "email": "lukas.gaechter@mind.ch",
+      "homepage": "https://www.mind.ch"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/mindkomm/timber-integration-woocommerce/issues",
+    "source": "https://github.com/mindkomm/timber-integration-woocommerce",
+    "docs": "https://timber.github.io/docs/integrations/woocommerce"
+  },
+  "require": {
+    "php": "7.*"
+  },
   "autoload": {
     "psr-4": {
       "Timber\\Integrations\\WooCommerce\\": "lib/Timber/Integrations/WooCommerce"

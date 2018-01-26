@@ -1,12 +1,10 @@
 <?php
 /**
  * Plugin Name: Timber Integration for WooCommerce
- * Plugin URI: https://bitbucket.org/mindkomm/timber-integration-woocommerce
- * Description: WooCommerce Integration for WooCommerce
- * Author: MIND
+ * Plugin URI: https://github.com/mindkomm/timber-integration-woocommerce
+ * Description: WooCommerce Integration for Timber
+ * Author: Lukas Gaechter
  * Author URI: https://www.mind.ch
- * License: GNU General Public License v2.0 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Version: 0.3.0
+ * Version: 0.4.0
  */
 require_once __DIR__ . '/vendor/autoload.php';
