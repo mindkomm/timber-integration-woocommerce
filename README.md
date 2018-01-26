@@ -21,11 +21,11 @@ Add a file `inc/woocommerce/WooCommerce_Custom.php` to your theme with the follo
 class WooCommerce_Custom {
     public function __construct() {
         if ( class_exists( 'WooCommerce' ) ) {
-            new \Mind\Timber\Integrations\WooCommerce\WooCommerce();
+            Timber\Integrations\WooCommerce\WooCommerce::init();
         }
 
         // Disable WooCommerce image functionality
-        // \Mind\Timber\Integrations\WooCommerce\WooCommerce::disable_woocommerce_images();
+        // Timber\Integrations\WooCommerce\WooCommerce::disable_woocommerce_images();
 
         add_action( 'after_setup_theme', [ $this, 'hooks' ] );
     }
@@ -62,7 +62,7 @@ Add a file `woocommerce.php` to the root your theme with the following contents:
  * Usually, WooCommerce template files are placed in the woocommerce/ folder of the theme. If a woocommerce.php file
  * exists, this will be used for all templates.
  */
-\Mind\Timber\Integrations\WooCommerce\WooCommerce::render_default_template();
+Timber\Integrations\WooCommerce\WooCommerce::render_default_template();
 ```
 
 The function `render_default_template()` makes it possible for you to render the default files used by WooCommerce. When working with WooCommerce, you’re probably used to have a `woocommerce/single-product.php` in your theme. You don’t need that anymore. You can now create a file `views/woocommerce/single-product.twig` in your Twig views folder directly.
@@ -166,7 +166,7 @@ If you want to use your own image handling functionality and disable all WooComm
 Call this in the `__construct()` function of **WooCommerce_Custom.php**:
 
 ```php
-\Mind\Timber\Integrations\WooCommerce\WooCommerce::disable_woocommerce_images();
+Timber\Integrations\WooCommerce\WooCommerce::disable_woocommerce_images();
 ```
 
 You can display a product image like you would do it in every Timber theme.
@@ -212,13 +212,13 @@ The other possibility is to filter posts when when they are used.
 You would then define a function in PHP that takes in the posts and filters them. However, be aware that you then always need to return a `PostCollection` instead of an array so that the single posts will be set up properly:
 
 ```php
-return new \Timber\PostCollection( $filtered_posts );
+return new Timber\PostCollection( $filtered_posts );
 ```
 
 ## Get a product post by ID
 
 ```php
-new \Mind\Timber\Integrations\WooCommerce\Product( 354 );
+new Timber\Integrations\WooCommerce\Product( 354 );
 ```
 
 ```twig
@@ -227,8 +227,9 @@ new \Mind\Timber\Integrations\WooCommerce\Product( 354 );
 
 ## Varia
 
-You can still use the `woocommerce_before_template_part` and `woocommerce_after_template_part`.
+You can still use the `woocommerce_before_template_part` and `woocommerce_after_template_part` to wrap a template.
 
 ## Todo
 
+- Write a simple function wrap a WooCommerce template with something else?
 - Add filter to filter current menu item classes for shop page.
