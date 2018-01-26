@@ -1,6 +1,6 @@
 <?php
 
-namespace Mind\Timber\Integrations\WooCommerce;
+namespace Timber\Integrations\WooCommerce;
 
 /**
  * Class ProductsIterator

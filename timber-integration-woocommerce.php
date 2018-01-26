@@ -9,6 +9,4 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Version: 0.3.0
  */
-namespace Mind;
-
 require_once __DIR__ . '/vendor/autoload.php';

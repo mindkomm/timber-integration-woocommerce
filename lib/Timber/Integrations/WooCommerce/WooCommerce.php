@@ -1,6 +1,6 @@
 <?php
 
-namespace Mind\Timber\Integrations\WooCommerce;
+namespace Timber\Integrations\WooCommerce;
 
 use Timber\Loader;
 use Timber\LocationManager;
@@ -51,8 +51,8 @@ class WooCommerce {
 
 		$defaults = array(
 			'subfolder'        => 'woocommerce',
-			'product_class'    => '\Mind\Timber\Integrations\WooCommerce\Product',
-			'product_iterator' => '\Mind\Timber\Integrations\WooCommerce\ProductsIterator',
+			'product_class'    => '\Timber\Integrations\WooCommerce\Product',
+			'product_iterator' => '\Timber\Integrations\WooCommerce\ProductsIterator',
 		);
 
 		$args = wp_parse_args( $args, $defaults );
