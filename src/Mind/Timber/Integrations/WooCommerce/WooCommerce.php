@@ -41,11 +41,13 @@ class WooCommerce {
 	 *
 	 * @param array $args Array of arguments for the Integration.
 	 */
-	public function __construct( $args = array() ) {
+	public static function init( $args = array() ) {
 		// Bailout in backend
 		if ( is_admin() ) {
 			return;
 		}
+
+		$self = new self();
 
 		$defaults = array(
 			'subfolder'        => 'woocommerce',
@@ -59,22 +61,15 @@ class WooCommerce {
 		self::$product_class    = $args['product_class'];
 		self::$product_iterator = $args['product_iterator'];
 
-		$this->setup_hooks();
-	}
-
-	/**
-	 * Setup hooks used in this integration.
-	 */
-	public function setup_hooks() {
 		// For conditional functions like `is_woocommerce()` to work, we need to hook into the 'wp' action.
-		add_action( 'wp', array( $this, 'setup_classes' ), 20 );
+		add_action( 'wp', array( $self, 'setup_classes' ), 20 );
 
-		add_filter( 'wc_get_template', array( $this, 'maybe_render_twig_partial' ), 10, 3 );
+		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_partial' ), 10, 3 );
 
 		// Add WooCommerce context data to normal context.
-		add_filter( 'timber/context', array( __CLASS__, 'get_woocommerce_context' ) );
+		add_filter( 'timber/context', array( $self, 'get_woocommerce_context' ) );
 
-		add_action( 'timber/twig/functions', array( $this, 'add_timber_functions' ) );
+		add_action( 'timber/twig/functions', array( $self, 'add_timber_functions' ) );
 	}
 
 	/**
