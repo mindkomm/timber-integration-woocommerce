@@ -6,8 +6,7 @@ When working with WooCommerce you’ll want to stay as compatible to updates to 
 
 - Work with actions and filters provided by WooCommerce (or the Storefront theme) as much as you can.
 - Replace functions where you need them.
-
-- Never remove a hook from a frontend template. Unhook functionalities you don’t need through `remove_filter` and `remove_action`.
+- Never delete a hook from a frontend template. Unhook functionalities you don’t need through `remove_filter` and `remove_action`.
 
 ## Installation
 
@@ -35,11 +34,11 @@ class WooCommerce_Custom {
      *
      * @see plugins/woocommerce/includes/wc-template-hooks.php for a list of actions.
      *
-     * Everything here is hook to after_setup_theme, because child theme functionality runs before parent theme
+     * Everything here is hooked to `after_setup_theme`, because child theme functionality runs before parent theme
      * functionality. By hooking it, we make sure it runs after all hooks in the parent theme were registered.
      */
     public function hooks() {
-       
+       // Add your hooks to customize WooCommerce here
     }
 }
 
@@ -69,9 +68,13 @@ The function `render_default_template()` makes it possible for you to render the
 
 If you have more complex functionality that you need to apply, you can also copy the contents of the `render_default_template` function into `woocommerce.php` directly and adapt it there.
 
-## Automatic Twig partial selection
+## Working with the Integration
 
-WooCommerce allows you to [override templates](https://docs.woocommerce.com/document/template-structure/) by adding files to the `woocommerce/` folder of your theme. The integration **first checks if a Twig template exists**. So instead of adding a file `woocommerce/single-product/related.php` to your theme, you can directly add a file `views/woocommerce/single-product/related.twig`, **without adding a PHP file**. The arguments that WooCommerce would pass to the template will be available under the `wc` variable. Here’s an example:
+### Automatic Twig partial selection
+
+WooCommerce allows you to [override templates](https://docs.woocommerce.com/document/template-structure/) by adding files to the `woocommerce/` folder of your theme. With the integration, you don’t necessarily have to do that. The integration **first checks if a Twig template exists**. So instead of adding a file `woocommerce/single-product/related.php` to your theme, you can directly add a file `views/woocommerce/single-product/related.twig`, which the integration will render instead of PHP file.
+
+The arguments that WooCommerce would pass to the template will be available under the `wc` variable. Here’s an example:
 
 **views/woocommerce/single-product/related.twig**
 
@@ -87,7 +90,7 @@ Additionally, if you’re in the context of a product, you’ll always have the 
 {{ dump(product) }}
 ```
 
-## Product global
+### Product global
 
 When working with WooCommerce, you’re maybe used to the `$product` global. The integration handles that global variable for you and makes it available under `post.product` in your Twig templates. Here’s an example for the `get_attribute` object on `$product`.
 
@@ -95,17 +98,28 @@ When working with WooCommerce, you’re maybe used to the `$product` global. The
 {{ post.product.get_attribute('ingredient') }}
 ```
 
-## WooCommerce context
+So what is the difference between `post` and `product`?
 
-The integration adds some context variables to the global Timber context. This means, that when you access the context through `Timber::get_context()`, you’ll get access to the following variables:
+- `post` is an instance of `Timber\Post`. In the case of this integration, it’s an instance of `Timber\Product`, which extends `Timber\Post`.
+- `product` is an instance of [`WP_Product`](https://docs.woocommerce.com/wc-apidocs/class-WC_Product.html), which is not really a post, but an object that handles all functionalities related to a WooCommerce product. 
 
-- `cart` – The WooCommerce cart object.
+### WooCommerce context
 
-### Template based context
+The integration adds some context variables to the global Timber context. When you access the context through `Timber::get_context()`, you’ll get access to the following variables:
 
-- `term` – Will be set when a shop taxonomy term is displayed.
+- `cart` – The [WooCommerce cart object](https://docs.woocommerce.com/wc-apidocs/class-WC_Cart.html).
 
-## Cart
+#### Template based context
+
+In addition to the global context, you’ll have other context variables available based on the template file you’re currently working with.
+
+- `post` – Will be an instance of `Timber\Product` when a singular product page is displayed (`is_singular('product')`). If the [shop page](https://docs.woocommerce.com/document/woocommerce-pages/) is displayed, it will be a `Timber\Post` with that page as the contents.
+- `term` – Will be set when a shop taxonomy term is displayed (when [`is_product_taxonomy()`](https://docs.woocommerce.com/wc-apidocs/function-is_product_taxonomy.html) applies).
+- `title` – Title to display on archive pages. Result of [woocommerce_page_title()](https://docs.woocommerce.com/wc-apidocs/function-woocommerce_page_title.html).
+
+## Examples
+
+### Mini Cart
 
 If you want to display a "mini cart" that displays the cart contents count and total price, you can [use the `woocommerce_add_to_cart_fragments`](https://docs.woocommerce.com/document/show-cart-contents-total/) hook. Here’s a class you can save in `inc/woocommerce/WooCommerce_Cart.php`:
 
@@ -183,13 +197,9 @@ You can display a product image like you would do it in every Timber theme.
 
 WooCommerce uses the hook `woocommerce_shop_loop` to set the structured data for different products. This hook is normally called from `archive.php`. You don’t have to call it manually, because it’s already called in the integration’s `ProductsIterator`.
 
-## Products Order
+## Translate WooCommerce templates to Twig
 
-In the WooCommerce product display settings, you can set that products are ordered by menu order. Then, in the edit screen of a product, you’ll find an Advanced Setting for the menu order. If you have to set this for every product, this is quite a lot of work. Luckily, there are plugins like [Intuitive Custom Post Order](https://wordpress.org/plugins/intuitive-custom-post-order/). In the settings, you an activate the option to make products sortable via drag and drop and your products will be sorted automatically.
-
-## Porting over templates
-
-When translating WooCommerce templates to Twig, you need to be careful. There are many hooks and filters that you should include, except for hooks that are only responsible for displaying loop wrappers. For example: `woocommerce_product_loop_start` will load `loop/loop-start.php`, which will only display the following:
+When translating WooCommerce templates to Twig, you need to be extra careful. There are many hooks and filters that you should include, except for hooks that are only responsible for displaying loop wrappers. For example: `woocommerce_product_loop_start` will load `loop/loop-start.php`, which will only display the following:
 
 ```html
 <ul class="products">
@@ -199,7 +209,7 @@ It’s up to you then, if you want to create a `loop/loop-start.twig` file. You 
 
 ## Filter posts from Twig instead of filtering them in PHP
 
-Normally when working with Timber, you’d want to filter post data before you pass it to a Twig template. With WooCommerce, this maybe is a little more complicated. You could write your own `woocommerce.php` that handles all the data. But remember, we want to interfere with WooCommerce as little as possible.
+Normally when working with Timber, you’d want to filter post data before you pass it to a Twig template. With WooCommerce, this is maybe a little more complicated. You could write your own `woocommerce.php` that handles all the data. But remember, we want to interfere with WooCommerce as little as possible.
 
 The other possibility is to filter posts when when they are used.
 
@@ -229,7 +239,16 @@ new Timber\Integrations\WooCommerce\Product( 354 );
 
 You can still use the `woocommerce_before_template_part` and `woocommerce_after_template_part` to wrap a template.
 
+## Roadmap
+
+Here are a couple features that are not yet integrated, but would be good contribution opportunities:
+
+- [ ] Add support for tag templates.
+- [ ] Add support for WooCommerce galleries.
+
 ## Todo
 
-- Write a simple function wrap a WooCommerce template with something else?
+- Write a simple function to wrap a WooCommerce template with something else?
 - Add filter to filter current menu item classes for shop page.
+- Hint about adding WooCommerce support to the theme (<https://woocommerce.wordpress.com/2017/12/09/wc-3-3-will-look-great-on-all-the-themes/>).
+- Check compatibility with <https://woocommerce.wordpress.com/2017/12/11/wc-3-3-image-size-improvements/>
