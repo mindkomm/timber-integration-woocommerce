@@ -2,6 +2,14 @@
 
 WooCommerce integration for Timber.
 
+## Documentation
+
+- [Installation](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/installation.md)
+- [Usage Guide](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/usage.md)
+- [Images](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/images.md)
+- [Examples](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/examples.md)
+- [Mini Cart](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/mini-cart.md)
+
 ## Varia
 
 You can still use the `woocommerce_before_template_part` and `woocommerce_after_template_part` to wrap a template.
