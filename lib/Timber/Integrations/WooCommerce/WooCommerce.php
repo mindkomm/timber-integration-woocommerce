@@ -12,8 +12,6 @@ use Timber\Timber;
  * Class WooCommerce
  *
  * Tries to make it as easy as possible to work with WooCommerce when using Timber.
- *
- * @package Timber\Integrations\WooCommerce
  */
 class WooCommerce {
 	/**

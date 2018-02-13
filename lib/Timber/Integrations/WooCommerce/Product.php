@@ -6,8 +6,6 @@ use Timber\Term;
 
 /**
  * Class Product
- *
- * @package Timber\Integrations\WooCommerce
  */
 class Product extends \Timber\Post {
 	/**

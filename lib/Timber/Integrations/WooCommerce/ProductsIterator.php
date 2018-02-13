@@ -4,8 +4,6 @@ namespace Timber\Integrations\WooCommerce;
 
 /**
  * Class ProductsIterator
- *
- * @package Timber\Integrations\WooCommerce
  */
 class ProductsIterator extends \ArrayIterator {
 	/**
