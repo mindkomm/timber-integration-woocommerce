@@ -154,6 +154,9 @@ class WooCommerce {
 				$context['post_id'] = $product->get_id();
 			}
 
+			/**
+			 * TODO: Add documentation for this.
+			 */
 			$context = apply_filters( 'timber/woocommerce/template/context', $context, $template_name, $template_name_twig, $product );
 
 			Timber::render( $file, $context );
