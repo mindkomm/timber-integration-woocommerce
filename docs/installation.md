@@ -54,12 +54,12 @@ new WooCommerce_Theme();
 Make sure to require the class from `functions.php`.
 
 ```php
-require_once 'inc/woocommerce/WooCommerce_Custom.php';
+require_once 'inc/woocommerce/WooCommerce_Theme.php';
 ```
 
 Add a file `woocommerce.php` to the root your theme with the following contents:
 
-```
+```php
 <?php
 /**
  * woocommerce.php
