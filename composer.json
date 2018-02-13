@@ -1,5 +1,5 @@
 {
-  "name": "timber/timber-integration-woocommerce",
+  "name": "mindkomm/timber-integration-woocommerce",
   "type": "library",
   "description": "WooCommerce integration for Timber.",
   "keywords": [

@@ -3,7 +3,7 @@
 You can install the integration with Composer:
 
 ```bash
-composer require timber/timber-integration-woocommerce
+composer require mindkomm/timber-integration-woocommerce
 ```
 
 Activate the plugin.
@@ -14,7 +14,7 @@ Add a class to your theme with the following contents:
 <?php
 
 class WooCommerce_Theme {
-    public static function init() {
+    public function __construct() {
         $self = new self();
 
         if ( class_exists( 'WooCommerce' ) ) {
@@ -48,7 +48,7 @@ class WooCommerce_Theme {
     }
 }
 
-WooCommerce_Theme::init();
+new WooCommerce_Theme();
 ```
 
 Make sure to require the class from `functions.php`.
