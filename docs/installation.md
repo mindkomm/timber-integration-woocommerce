@@ -1,12 +1,14 @@
 # Installation
 
-You can install the integration with Composer:
+Make sure the WooCommerce plugin is installed.
+
+You can then install the integration with Composer:
 
 ```bash
 composer require mindkomm/timber-integration-woocommerce
 ```
 
-Activate the plugin.
+If you don’t use Composer, you can install the integrations as a plugin that you’ll have to activate.
 
 Add a class to your theme with the following contents:
 
