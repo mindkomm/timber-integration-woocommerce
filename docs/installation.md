@@ -17,8 +17,6 @@ Add a class to your theme with the following contents:
 
 class WooCommerce_Theme {
     public function __construct() {
-        $self = new self();
-
         if ( class_exists( 'WooCommerce' ) ) {
             Timber\Integrations\WooCommerce\WooCommerce::init();
         }
@@ -26,8 +24,8 @@ class WooCommerce_Theme {
         // Disable WooCommerce image functionality
         // Timber\Integrations\WooCommerce\WooCommerce::disable_woocommerce_images();
 
-        add_action( 'after_setup_theme', [ $self, 'hooks' ] );
-        add_action( 'after_setup_theme', [ $self, 'setup' ] );
+        add_action( 'after_setup_theme', [ $this, 'hooks' ] );
+        add_action( 'after_setup_theme', [ $this, 'setup' ] );
     }
 
     /**
