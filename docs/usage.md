@@ -1,4 +1,12 @@
-# Working with the Integration
+---
+title: "Working with the Integration"
+linktitle: "Usage"
+slug: "usage"
+menu:
+  main:
+    parent: "woocommerce"
+    weight: 200
+---
 
 When working with WooCommerce you’ll want to stay as compatible to updates to WooCommerce as possible. This means that you should:
 

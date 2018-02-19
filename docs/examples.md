@@ -1,4 +1,10 @@
-# Examples
+---
+title: "Examples"
+menu:
+  main:
+    parent: "woocommerce"
+    weight: 400
+---
 
 ## Adapt the add-to-cart button
 

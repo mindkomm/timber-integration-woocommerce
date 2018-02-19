@@ -1,4 +1,10 @@
-# Installation
+---
+title: "Installation"
+menu:
+  main:
+    parent: "woocommerce"
+    weight: 100
+---
 
 Make sure the WooCommerce plugin is installed.
 

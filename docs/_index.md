@@ -1,3 +1,3 @@
 ---
-title: "WooCommerce Integration"
+title: "WooCommerce"
 ---

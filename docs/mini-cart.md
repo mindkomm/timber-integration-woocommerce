@@ -1,4 +1,10 @@
-# Mini Cart
+---
+title: "Mini Cart"
+menu:
+  main:
+    parent: "woocommerce"
+    weight: 500
+---
 
 If you want to display a "mini cart" that displays the cart contents count and total price, you can [use the `woocommerce_add_to_cart_fragments`](https://docs.woocommerce.com/document/show-cart-contents-total/) hook. Here’s a class you can save in `inc/woocommerce/WooCommerce_Cart.php`:
 

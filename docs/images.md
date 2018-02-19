@@ -1,4 +1,10 @@
-# Images
+---
+title: "Images"
+menu:
+  main:
+    parent: "woocommerce"
+    weight: 300
+---
 
 You can display a product image like you would do it in every Timber theme.
 
