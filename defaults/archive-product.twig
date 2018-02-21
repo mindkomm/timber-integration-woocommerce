@@ -30,7 +30,7 @@
     {% do action('woocommerce_before_shop_loop') %}
 
     {% if posts %}
-        <div class="row list-products">
+        <ul class="products">
             {% do fn('woocommerce_product_subcategories') %}
 
             {##
@@ -39,11 +39,11 @@
              # display.
              #}
             {% for post in posts if fn('have_posts') %}
-                <div class="col-sm-4 list-items">
+                <li class="product-items">
                     {% include 'woocommerce/teaser-product.twig' %}
-                </div>
+                </li>
             {% endfor %}
-        </div>
+        </ul>
 
     {% elseif not fn('woocommerce_product_subcategories', [{
         before: fn('woocommerce_product_loop_start', false),

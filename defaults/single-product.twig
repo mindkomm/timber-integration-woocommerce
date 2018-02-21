@@ -14,7 +14,7 @@
         <h1 class="heading-1" id="main-title">{{ post.title }}</h1>
 
         {% if post.thumbnail %}
-            <img class="img-responsive" src="{{ post.thumbnail.src('thumbnail') }}">
+            <img src="{{ post.thumbnail.src('thumbnail') }}">
         {% endif %}
 
         {##
