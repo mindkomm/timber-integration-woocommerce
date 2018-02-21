@@ -1,16 +1,18 @@
 ---
 title: "Examples"
+weight: 400
 menu:
   main:
     parent: "woocommerce"
-    weight: 400
 ---
 
 ## Adapt the add-to-cart button
 
-The default template for the add-to-cart button is called `loop/add-to-cart.php`. To change it, add a new file `views/woocommcerce/add-to-cart.twig`. Now you see that the contents of the template might look like this:
+The default template for the add-to-cart button is called **loop/add-to-cart.php**. To change it, add a new file **views/woocommcerce/add-to-cart.twig**. Now you see that the contents of the template might look like this:
 
 ```php
+<?php
+
 echo apply_filters( 'woocommerce_loop_add_to_cart_link', // WPCS: XSS ok.
     sprintf( '<a href="%s" data-quantity="%s" class="%s" %s>%s</a>',
         esc_url( $product->add_to_cart_url() ),
@@ -34,7 +36,7 @@ The first attribute `%s` will be replaced with `esc_url( $product->add_to_cart_u
 <a href="{{ product.add_to_cart_url()|e('esc_url') }}">
 ```
 
-See that we can directly use the product variable `{{ product }}`. Remember, the integration makes the `$product` global available to you as a variable in Twig. Let’s now translate the `data-quantity` attribute:
+See that we can directly use the product variable with `{{ product }}`. Remember, the integration makes the `$product` global available to you as a variable in Twig. Let’s now translate the `data-quantity` attribute:
 
 ```twig
 <a data-quantity="{{ wc.quantity|default(1) }}">
