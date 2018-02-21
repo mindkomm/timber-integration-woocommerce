@@ -12,6 +12,8 @@ use Timber\Timber;
  * Class WooCommerce
  *
  * Tries to make it as easy as possible to work with WooCommerce when using Timber.
+ *
+ * @api
  */
 class WooCommerce {
 	/**
@@ -45,6 +47,7 @@ class WooCommerce {
 	/**
 	 * WooCommerce constructor.
 	 *
+	 * @api
 	 * @param array $args Array of arguments for the Integration.
 	 */
 	public static function init( $args = array() ) {
@@ -220,17 +223,19 @@ class WooCommerce {
 	/**
 	 * Render default Twig templates.
 	 *
-	 * This function can be called from `woocommerce.php` template file in the root of the theme. It mimicks the logic
-	 * used by WooCommerce to sort out which template to load and tries to load the corresponding Twig file. It builds
-	 * up an array with Twig templates to check for. Timber will use the first Twig file that exists. In addition to
-	 * the default WooCommerce template files, there are some opininated "Goodies" that can make your life easier.
-	 * E.g., you don’t have to to use woocommerce/single-product.twig, but can use woocommerce/single.twig.
+	 * This function can be called from `woocommerce.php` template file in the root of the theme. It
+	 * mimicks the logic used by WooCommerce to sort out which template to load and tries to load
+	 * the corresponding Twig file. It builds up an array with Twig templates to check for. Timber
+	 * will use the first Twig file that exists. In addition to the default WooCommerce template
+	 * files, there are some opininated "Goodies" that can make your life easier. E.g., you don’t
+	 * have to to use *woocommerce/single-product.twig*, but can use *woocommerce/single.twig*.
 	 *
-	 * If you have your own solution going on or need to do more checks, you don’t have to call this function.
-	 *
-	 * TODO: Add functionality for product tags
+	 * If you have your own solution going on or need to do more checks, you don’t have to call this
+	 * function.
 	 *
 	 * @api
+	 * @todo Add functionality for product tags
+	 * @see WC_Template_Loader::get_template_loader_files()
 	 */
 	public static function render_default_template() {
 		$context = Timber::get_context();
@@ -326,6 +331,8 @@ class WooCommerce {
 	 * Disable image functions added in WooCommerce.
 	 *
 	 * This is useful if you want to use Timber’s image functionalities to display images.
+	 *
+	 * @api
 	 */
 	public static function disable_woocommerce_images() {
 		remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );

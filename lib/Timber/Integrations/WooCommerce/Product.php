@@ -6,6 +6,8 @@ use Timber\Term;
 
 /**
  * Class Product
+ *
+ * @api
  */
 class Product extends \Timber\Post {
 	/**
@@ -16,6 +18,19 @@ class Product extends \Timber\Post {
 	/**
 	 * Product constructor.
 	 *
+	 * @example
+	 * ```php
+	 * // Get a product post by ID
+	 * new Timber\Integrations\WooCommerce\Product( 354 );
+	 * ```
+	 *
+	 * You can also use the `Product` class in Twig.
+	 *
+	 * ```twig
+	 * {% set product = Product(354) %}
+	 * ```
+	 *
+	 * @api
 	 * @param mixed $post A post object or an object of class WC_Product or a class that inherits from WC_Product.
 	 */
 	public function __construct( $post = null ) {
@@ -44,6 +59,7 @@ class Product extends \Timber\Post {
 	/**
 	 * Get the first assigned product category.
 	 *
+	 * @api
 	 * @return bool|\Timber\Term
 	 */
 	public function category() {
@@ -61,6 +77,8 @@ class Product extends \Timber\Post {
 
 	/**
 	 * Get a WooCommerce product attribute by slug.
+	 *
+	 * @api
 	 *
 	 * @param string $slug          The name of the attribute to get.
 	 * @param bool   $convert_terms Whether to convert terms to Timber\Term objects.
