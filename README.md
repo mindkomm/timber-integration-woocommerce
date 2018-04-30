@@ -2,6 +2,13 @@
 
 This integration tries to make it easier to develop Timber themes for WooCommerce.
 
+Here’s a short list of features it adds and problems it tries to solve:
+
+- [Automatic handling of the `$product` global](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/usage.md#product-global). Whenever you loop through a list of WooCommerce products, the integration will set the `$product` global for you. This will improve compatibility for WooCommerce and its integrations.
+- [Enhance Timber’s context](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/usage.md#woocommerce-context).
+- [Automatic Twig partial selection](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/usage.md#automatic-twig-partial-selection)
+- Provide default templates, tips and examples.
+
 ## Documentation
 
 - [Installation](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/installation.md)
