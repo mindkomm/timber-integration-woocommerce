@@ -46,7 +46,11 @@ if ( class_exists( 'WooCommerce' ) ) {
 }
 ```
 
-### woocommerce.php
+From here on, you should be good to go. The integration hooks into the [context](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/usage.md#woocommerce-context) and adds features specific for WooCommerce. If you’re starting your theme from scratch, you’ll probably want to look at the following optional sections. You might also benefit if you already have Timber theme.
+
+## Optional: add woocommerce.php
+
+A **woocommerce.php** file that is placed into the root of your theme has priority over all other templates that you place in the `woocommerce/` folder of your theme. For example, **woocommerce.php** will take precedence over **woocommerce/archive-product.php**. If you use this file, WooCommerce will always use this file to render shop templates.
 
 Add a file `woocommerce.php` to the root your theme with the following contents:
 
@@ -63,7 +67,7 @@ Timber\Integrations\WooCommerce\WooCommerce::render_default_template();
 
 The function `render_default_template()` makes it possible for you to render the default files used by WooCommerce. If you have more complex functionality that you need to apply, you can also copy the contents of the `render_default_template` function into `woocommerce.php` directly and adapt it there.
 
-## Copy default templates to your theme
+## Optional: copy default templates to your theme
 
 In the **defaults** folder of the integration, you’ll find [default Twig templates](https://github.com/MINDKomm/timber-integration-woocommerce/tree/master/defaults). You can copy them over to a **woocommerce** folder in the Twig views folder of your theme.
 
@@ -73,7 +77,7 @@ your-theme/views/woocommerce/single-product.twig
 your-theme/views/woocommerce/teaser-product.twig
 ```
 
-If you named your views folder differently, copy the files there. If you want to use a different name than **woocommerce** for the subfolder, you can pass the name as an argument when you init the integration:
+If you named your views folder differently, copy the files there. If you want to use a different name than **woocommerce** for the subfolder, you can pass the name as an argument when you initialize the integration:
 
 ```php
 Timber\Integrations\WooCommerce\WooCommerce::init( array( 'subfolder' => 'woo' ) );
@@ -81,7 +85,7 @@ Timber\Integrations\WooCommerce\WooCommerce::init( array( 'subfolder' => 'woo' )
 
 ## Optional: Use a helper class
 
-You could either loosely add theme support and the initialization call for the integrations to your functions.php, or you can wrap everything in a proper class:
+You could either loosely add theme support and the initialization call for the integration to your functions.php, or you can wrap everything in a proper class:
 
 ```php
 <?php
@@ -122,7 +126,7 @@ class WooCommerce_Theme {
 new WooCommerce_Theme();
 ```
 
-Make sure to require the class from `functions.php`.
+Make sure to require the class from your **functions.php**:
 
 ```php
 require_once 'inc/WooCommerce_Theme.php';

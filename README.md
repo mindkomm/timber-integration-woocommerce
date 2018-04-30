@@ -20,7 +20,7 @@ Here are a couple features that are not yet integrated, but would be good contri
 ## Todo
 
 - Add testing.
-- Write a simple function to wrap a WooCommerce template with something else?
+- Write a simple function to wrap a WooCommerce template.
 - Add filter to filter current menu item classes for shop page.
 - Hint about adding WooCommerce support to the theme (<https://woocommerce.wordpress.com/2017/12/09/wc-3-3-will-look-great-on-all-the-themes/>).
 - Check compatibility with <https://woocommerce.wordpress.com/2017/12/11/wc-3-3-image-size-improvements/>

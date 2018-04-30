@@ -10,7 +10,7 @@ menu:
 
 ## Stay compatible
 
-When working with WooCommerce you’ll want to stay as compatible to WooCommerce as possible. If you stay compatible, it will be easier for you to update WooCommerce and your theme. Here are some recommendations:
+When working with WooCommerce you’ll want to stay as compatible to WooCommerce as possible. If you stay compatible, it will be easier for you to update WooCommerce and your theme. Here are some (opinionated) recommendations:
 
 - Try to edit as few WooCommerce templates as possible. If you want to change something, work with actions and filters provided by WooCommerce as much as you can.
 - Never delete a WooCommerce hook from a frontend template. Unhook functionalities you don’t need through `remove_filter` and `remove_action`.

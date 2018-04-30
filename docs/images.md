@@ -36,7 +36,7 @@ add_filter( 'woocommerce_product_get_image', function( $url, $product, $size, $a
     if ( ! is_cart() || 'woocommerce_thumbnail' !== $size ) {
         return $url;
     }
-
+    
     return Timber::compile_string(
         '<img src="{{ Product(id).thumbnail.src|resize(200, 200) }}">',
         array( 'id' => $product->get_id() )
