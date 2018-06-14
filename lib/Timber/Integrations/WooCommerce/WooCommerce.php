@@ -320,7 +320,7 @@ class WooCommerce {
 	 * @return mixed
 	 */
 	public function add_timber_functions( $twig ) {
-		$twig->addFunction( new \Twig_Function( 'Product', function( $pid ) {
+		$twig->addFunction( new \Twig_SimpleFunction( 'Product', function( $pid ) {
 			return new self::$product_class( $pid );
 		} ) );
 
