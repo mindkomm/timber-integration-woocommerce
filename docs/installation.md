@@ -10,18 +10,13 @@ menu:
 
 The WooCommerce integration comes as a separate package. Before you install it, make sure that you’ve installed the [WooCommerce plugin](https://wordpress.org/plugins/woocommerce/).
 
-### With Composer
-
-You can then install the integration with Composer:
+You can then install the integration with [Composer](https://getcomposer.org/):
 
 ```bash
 composer require mindkomm/timber-integration-woocommerce
 ```
 
-### As a plugin
-
-<del>If you don’t use Composer, you can install the integration as a plugin that you’ll have to activate.</del>
-Currently, you can’t just download the source and install the integration as a plugin. This is something that we want to provide in the future.
+You can’t install the integration as a WordPress plugin.
 
 ## Prepare your theme
 
