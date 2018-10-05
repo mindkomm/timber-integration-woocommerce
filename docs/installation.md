@@ -16,6 +16,13 @@ You can then install the integration with [Composer](https://getcomposer.org/):
 composer require mindkomm/timber-integration-woocommerce
 ```
 
+Then make sure that you require the autoload file. If you install the integration as a dependency of your theme, then this would be in your **functions.php**:
+
+```php
+// Load Composer dependencies
+require_once 'vendor/autoload.php';
+```
+
 You can’t install the integration as a WordPress plugin.
 
 ## Prepare your theme
