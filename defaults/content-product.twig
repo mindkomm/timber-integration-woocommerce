@@ -1,15 +1,15 @@
-<div {{ fn('post_class', ['list-item', 'teaser'] ) }}>
-    <div class="teaser-image-container">
-        {% if post.thumbnail %}
-            <a class="teaser-image-link" href="{{ post.link }}">
-                <img class="teaser-image" src="{{ post.thumbnail.src('thumbnail') }}" />
-            </a>
-        {% endif %}
-    </div>
-
-    <div class="teaser-content">
+{# Ensure visibility. #}
+{% if product and product.is_visible() %}
+    <li {{ fn('wc_product_class') }}>
         {##
-         # woocommerce_before_shop_loop_item_title hook.
+         # Hook: woocommerce_before_shop_loop_item.
+         #
+         # @hooked woocommerce_template_loop_product_link_open - 10
+         #}
+        {% do action('woocommerce_before_shop_loop_item') %}
+
+        {##
+         # Hook: woocommerce_before_shop_loop_item_title.
          #
          # @hooked woocommerce_show_product_loop_sale_flash - 10
          # @hooked woocommerce_template_loop_product_thumbnail - 10
@@ -17,18 +17,14 @@
         {% do action('woocommerce_before_shop_loop_item_title') %}
 
         {##
-         # woocommerce_shop_loop_item_title hook.
+         # Hook: woocommerce_shop_loop_item_title.
          #
          # @hooked woocommerce_template_loop_product_title - 10
          #}
         {% do action('woocommerce_shop_loop_item_title') %}
 
-        <h3 class="heading-teaser">
-            <a class="teaser-link" href="{{ post.link }}">{{ post.title }}</a>
-        </h3>
-
         {##
-         # woocommerce_after_shop_loop_item_title hook.
+         # Hook: woocommerce_after_shop_loop_item_title.
          #
          # @hooked woocommerce_template_loop_rating - 5
          # @hooked woocommerce_template_loop_price - 10
@@ -36,7 +32,7 @@
         {% do action('woocommerce_after_shop_loop_item_title') %}
 
         {##
-         # woocommerce_after_shop_loop_item hook.
+         # Hook: woocommerce_after_shop_loop_item.
          #
          # The second parameter is currently needed to prevent an issue with Timber action calls.
          #
@@ -44,5 +40,5 @@
          # @hooked woocommerce_template_loop_add_to_cart - 10
          #}
         {% do action('woocommerce_after_shop_loop_item', []) %}
-    </div>
-</div>
+    </li>
+{% endif %}
