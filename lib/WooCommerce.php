@@ -73,7 +73,8 @@ class WooCommerce {
 		// For conditional functions like `is_woocommerce()` to work, we need to hook into the 'wp' action.
 		add_action( 'wp', array( $self, 'setup_classes' ), 20 );
 
-		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_partial' ), 10, 3 );
+		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
+		add_filter( 'wc_get_template_part', array( $self, 'maybe_render_twig_template_part' ), 10, 3 );
 
 		// Add WooCommerce context data to normal context.
 		add_filter( 'timber/context', array( $self, 'get_woocommerce_context' ) );
@@ -118,14 +119,17 @@ class WooCommerce {
 	}
 
 	/**
-	 * Look for a Twig template in the theme folder first.
+	 * Renders a Twig template instead of a PHP template when calling wc_get_template().
+	 *
+	 * Looks for a Twig template in the theme folder first.
 	 *
 	 * @param string $located       Full path to the template.
 	 * @param string $template_name Relative to the template.
 	 * @param array  $args          Template arguments.
+	 *
 	 * @return string Path of the file to render.
 	 */
-	public function maybe_render_twig_partial( $located, $template_name, $args ) {
+	public function maybe_render_twig_template( $located, $template_name, $args ) {
 		/**
 		 * Build template name Timber should look for.
 		 *
@@ -151,7 +155,7 @@ class WooCommerce {
 			// Add the arguments for the WooCommerce template
 			$context['wc'] = self::convert_objects( $args );
 
-			// Add current product to context
+			// Add current product to context.
 			if ( $product instanceof \WC_Product ) {
 				$context['product'] = $product;
 				$context['post_id'] = $product->get_id();
@@ -172,6 +176,50 @@ class WooCommerce {
 		}
 
 		return $located;
+	}
+
+	/**
+	 * Renders a Twig template instead of a PHP template when calling wc_get_template_part().
+	 *
+	 * @since 0.6.0
+	 *
+	 * @param string $template The template to load.
+	 * @param mixed  $slug     Template slug.
+	 * @param string $name     Optional. Template name. Default ''.
+	 *
+	 * @return bool|string Default template name if no Twig template was found. False if Twig
+	 *                     template was found.
+	 */
+	public function maybe_render_twig_template_part( $template, $slug, $name = '' ) {
+		// Build template name Timber should look for.
+		$template_name_twig = self::$subfolder . "{$slug}-{$name}.twig";
+
+		// Get loader and check if file exists.
+		// TODO: Is this now the proper way to initialize and use a loader? Should a new loader be initialized here or would it be better to initialize it in the constructor?
+		$caller = LocationManager::get_calling_script_dir( 1 );
+		$loader = new Loader( $caller );
+		$file   = $loader->choose_template( $template_name_twig );
+
+		// Use WooCommerce’s default template if no Twig file was found.
+		if ( ! $file ) {
+			return $template;
+		}
+
+		global $product;
+
+		// We can access the context here without performance loss, because it was already cached.
+		$context = Timber::get_context();
+
+		// Add current product to context.
+		if ( $product instanceof \WC_Product ) {
+			$context['product'] = $product;
+			$context['post_id'] = $product->get_id();
+		}
+
+		Timber::render( $file, $context );
+
+		// Falsy values will prevent WooCommerce from loading a template.
+		return false;
 	}
 
 	public static function convert_objects( $args ) {
@@ -315,7 +363,7 @@ class WooCommerce {
 	/**
 	 * Make function available in Twig.
 	 *
-	 * @param \Twig_Environment $twig Twig Environment
+	 * @param \Twig_Environment $twig Twig Environment.
 	 *
 	 * @return mixed
 	 */
