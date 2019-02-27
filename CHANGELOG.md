@@ -1,5 +1,12 @@
 # Timber Integration for WooCommerce
 
+## 0.6.0
+
+- Updated default templates to work with newest version of WooCommerce.
+- Added support for `wc_get_template_part()`.
+- Fixed a bug when the `$post` global was not properly set when looping over products.
+- Updated internal folder structure.
+
 ## 0.5.2
 
 - Fixed bug that prevented the integration from working with different versions of Twig. Thanks @chrislind and @VincentLoy!
