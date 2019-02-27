@@ -5,7 +5,7 @@ namespace Timber\Integrations\WooCommerce;
 /**
  * Class ProductsIterator
  */
-class ProductsIterator extends \ArrayIterator {
+class ProductsIterator extends \Timber\PostsIterator {
 	/**
 	 * Set $product global in addition to $post global.
 	 *
