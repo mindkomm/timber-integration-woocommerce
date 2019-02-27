@@ -152,7 +152,7 @@ class WooCommerce {
 			// We can access the context here without performance loss, because it was already cached.
 			$context = Timber::get_context();
 
-			// Add the arguments for the WooCommerce template
+			// Add the arguments for the WooCommerce template.
 			$context['wc'] = self::convert_objects( $args );
 
 			// Add current product to context.

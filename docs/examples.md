@@ -6,6 +6,54 @@ menu:
     parent: "woocommerce"
 ---
 
+## Change content output wrappers
+
+WooCommerce will wrap all content with its own wrappers through the `woocommerce_before_main_content` action that you can find both in your **archive-product.twig** as well as **single-product.twig**.
+
+You can disable the wrapper markup through:
+
+```php
+remove_action(
+    'woocommerce_before_main_content',
+    'woocommerce_output_content_wrapper'
+);
+
+remove_action(
+    'woocommerce_after_main_content',
+    'woocommerce_output_content_wrapper_end'
+);
+```
+
+You can directly add your markup to your **archive-product.twig** and **single-product.twig** templates. Alternatively, you can add your own markup through the **views/woocommerce/global/wrappers-start.twig** and **views/woocommerce/global/wrapper-end.twig** templates.
+
+## Remove the product data tabs
+
+If tabs are not your thing to display your production information, you can change it. In **single-product.twig**, you can see that the function `woocommerce_output_product_data_tabs()` is hooked to the `woocommerce_after_single_product_summary` action (Check the `@hooked` list in the comment block).
+
+If you want to disable the function that displays the tabs, you can remove it with `remove_action()`:
+
+```php
+remove_action(
+    'woocommerce_after_single_product_summary', 
+    'woocommerce_output_product_data_tabs'
+);
+```
+
+By default, WooCommerce adds the product description in the product’s post content. Add the description manually before the `woocommerce_after_single_product_summary` in your **single-product.twig** template:
+
+```twig
+{{ post.content }}
+
+{##
+ # Hook: woocommerce_after_single_product_summary.
+ #
+ # @unhooked woocommerce_output_product_data_tabs - 10
+ # @hooked woocommerce_upsell_display - 15
+ # @hooked woocommerce_output_related_products - 20
+ #}
+{% do action('woocommerce_after_single_product_summary') %}
+```
+
 ## Adapt the add-to-cart button
 
 The default template for the add-to-cart button is called **loop/add-to-cart.php**. To change it, add a new file **views/woocommcerce/add-to-cart.twig**. Now you see that the contents of the template might look like this:
