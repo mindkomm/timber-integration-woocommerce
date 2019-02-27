@@ -1,31 +1,31 @@
 {% extends 'base.twig' %}
 
 {% block content %}
+    {##
+     # woocommerce_before_main_content hook.
+     #
+     # @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
+     # @hooked woocommerce_breadcrumb - 20
+     #}
+    {% do action('woocommerce_before_main_content') %}
 
-<div class="container">
-    <div id="product-{{ post.id }}" {{ fn('post_class', ['product', 'product--' ~ post.product.get_type()]) }}>
+    {##
+     # Hook: woocommerce_before_single_product.
+     #
+     # @hooked wc_print_notices - 10
+     #}
+    {% do action('woocommerce_before_single_product') %}
+
+    <div id="product-{{ post.id }}" {{ fn('wc_product_class') }}>
         {##
-         # woocommerce_before_single_product hook.
-         #
-         # @hooked wc_print_notices - 10
-         #}
-        {% do action('woocommerce_before_single_product') %}
-
-        <h1 class="heading-1" id="main-title">{{ post.title }}</h1>
-
-        {% if post.thumbnail %}
-            <img src="{{ post.thumbnail.src('thumbnail') }}">
-        {% endif %}
-
-        {##
-		 # woocommerce_before_single_product_summary hook.
+		 # Hook: woocommerce_before_single_product_summary.
 		 #
 		 # @hooked woocommerce_show_product_sale_flash - 10
 		 # @hooked woocommerce_show_product_images - 20
 		 #}
         {% do action('woocommerce_before_single_product_summary') %}
 
-        <div class="product-summary">
+        <div class="summary entry-summary">
             {##
 			 # woocommerce_single_product_summary hook.
 			 #
@@ -38,13 +38,11 @@
 			 # @hooked woocommerce_template_single_sharing - 50
 			 # @hooked WC_Structured_Data::generate_product_data() - 60
              #}
-            {% do action( 'woocommerce_single_product_summary' ) %}
-
-            <div class="content">{{ post.content }}</div>
+            {% do action('woocommerce_single_product_summary') %}
         </div>
 
         {##
-		 # woocommerce_after_single_product_summary hook.
+		 # Hook: woocommerce_after_single_product_summary.
 		 #
 		 # @hooked woocommerce_output_product_data_tabs - 10
 		 # @hooked woocommerce_upsell_display - 15
@@ -54,6 +52,18 @@
     </div>
 
     {% do action('woocommerce_after_single_product') %}
-</div>
 
+    {##
+     # woocommerce_after_main_content hook.
+     #
+     # @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
+     #}
+    {% do action('woocommerce_after_main_content') %}
+
+    {##
+     # woocommerce_sidebar hook.
+     #
+     # @hooked woocommerce_get_sidebar - 10
+     #}
+    {% do action('woocommerce_sidebar') %}
 {% endblock %}
