@@ -13,8 +13,11 @@ If you want to display a "mini cart", sometimes also called "card fragments", th
 
 use Timber\Timber;
 
-class Theme_Mini_Cart {
-    public function __construct() {
+class ThemeMiniCart {
+    /**
+     * Init hooks.
+     */
+    public function init() {
         add_filter( 'woocommerce_add_to_cart_fragments', [ $this, 'cart_link_fragment' ] );
     }
 
@@ -37,11 +40,15 @@ class Theme_Mini_Cart {
         return $fragments;
     }
 }
-
-new Theme_Mini_Cart();
 ```
 
-Don’t forget to require it in your **functions.php** file. In the `cart_link_fragment` method, you can see that we compile a Twig template, that looks like this:
+Don’t forget to require and initialize it in your **functions.php** file:
+
+```php
+( new Theme_Mini_Cart() )->init();
+```
+
+In the `cart_link_fragment` method, you can see that we compile a Twig template, that looks like this:
 
 **views/woocommerce/cart/fragment-link.twig**
 
@@ -56,9 +63,9 @@ Don’t forget to require it in your **functions.php** file. In the `cart_link_f
 </a>
 ```
 
-See that the link with the class `cart-mini-contents` is added to the `$fragments` global in the `cart_link_fragment` method? That will be a JavaScript selector that updates the contents in the link through AJAX. WooCommerce needs to know the HTML to update the cart with. We can make use of `Timber::compile` to use the same Twig template that we also use display the cart fragment in our theme.
+See that the link with the class `cart-mini-contents` is added to the `$fragments` global in the `cart_link_fragment` method? That will be a JavaScript selector that updates the contents in the link through AJAX. WooCommerce needs to know the HTML to update the cart with. We can make use of `Timber::compile()` to use the same Twig template that we also use to display the cart fragment in our theme.
 
-So, to display the mini cart in your theme, for example in your header, you can include it:
+So, to display the mini cart in your theme – for example in your header – you can include it as follows:
 
 **Twig**
 
