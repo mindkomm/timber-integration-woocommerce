@@ -4,13 +4,16 @@ namespace Timber\Integrations\WooCommerce;
 
 /**
  * Class ProductsIterator
+ *
+ * @todo After Timber 2.0 is released, this class can probably be removed.
  */
-class ProductsIterator extends \ArrayIterator {
+class ProductsIterator extends \Timber\PostsIterator {
 	/**
 	 * Set $product global in addition to $post global.
 	 *
-	 * For some functionality, WooCommerce works with a global named $product. When looping over multiple product posts,
-	 * this global is not automatically set. With this custom ArrayIterator, we can prepare the globals that are needed.
+	 * For some functionality, WooCommerce works with a global named $product. When looping over
+	 * multiple product posts, this global is not automatically set. With this custom ArrayIterator,
+	 * we can prepare the globals that are needed.
 	 *
 	 * @see \Timber\PostsIterator::current()
 	 *
@@ -26,9 +29,10 @@ class ProductsIterator extends \ArrayIterator {
 		/**
 		 * Generate Structured Data for archives.
 		 *
-		 * Used to set the structured data for a post archive page, which is then inserted into the footer.
-		 * This is only run on archive pages, where a woocommerce_before_shop_loop exists. For singular product
-		 * pages, WooCommerce uses the `woocommerce_single_product_summary` hook to generate data.
+		 * Used to set the structured data for a post archive page, which is then inserted into the
+		 * footer. This is only run on archive pages, where a woocommerce_before_shop_loop exists.
+		 * For singular product pages, WooCommerce uses the `woocommerce_single_product_summary`
+		 * hook to generate data.
 		 *
 		 * @hooked WC_Structured_Data::generate_product_data() - 10
 		 */

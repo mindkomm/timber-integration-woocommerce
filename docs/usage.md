@@ -10,10 +10,10 @@ menu:
 
 ## Stay compatible
 
-When working with WooCommerce you’ll want to stay as compatible to WooCommerce as possible. If you stay compatible, it will be easier for you to update WooCommerce and your theme. Here are some (opinionated) recommendations:
+When working with WooCommerce you’ll want to stay as compatible to WooCommerce as possible. If you stay compatible, it will be easier for you to update WooCommerce and your theme. Here are some (maybe opinionated) recommendations:
 
 - Try to edit as few WooCommerce templates as possible. If you want to change something, work with actions and filters provided by WooCommerce as much as you can.
-- Never delete a WooCommerce hook from a frontend template. Unhook functionalities you don’t need through `remove_filter` and `remove_action`.
+- Never delete a WooCommerce hook from a frontend template. Unhook functionalities you don’t need through `remove_filter()` and `remove_action()`.
 
 ## Template selection
 
@@ -47,26 +47,50 @@ With the integration, you can also use `single.twig` or `archive.twig`. Here’s
 
 ## Automatic Twig partial selection
 
-WooCommerce allows you to [override templates](https://docs.woocommerce.com/document/template-structure/) by adding files to the **woocommerce** folder of your theme. For example, you’re probably used to have a **woocommerce/single-product.php** file in your theme. With the integration, you don’t necessarily need that PHP file, but you can add a Twig file instead. The integration **first checks if a Twig template exists**. Here’s an example
+WooCommerce allows you to [override templates](https://docs.woocommerce.com/document/template-structure/) by adding files to the **woocommerce** folder of your theme. For example, you’re probably used to have a **woocommerce/single-product.php** file in your theme. With the integration, you don’t necessarily need that PHP file, but you can directly add a Twig file instead. The integration **first checks if a Twig template exists**. Here’s an example:
 
 Instead of adding a file **woocommerce/single-product/related.php** to your theme, you can directly add a file **views/woocommerce/single-product/related.twig**, which the integration will render instead of the PHP file.
 
 ### Template context
 
-The arguments that WooCommerce would pass to the template as global variables will be available under the `wc` variable in Twig.
+In your Twig templates that you add in the **woocommerce** folder, you’ll have the following variables available:
 
-**views/woocommerce/single-product/related.twig**
+- `post_id` - The ID of the currently displayed post in the loop.
 
-```twig
-{% for post in wc.related_products %}
-    {% include 'woocommerce/teaser-product.twig' %}
-{% endfor %}
-```
+Additionally, if you’re in the context of a product (if the `$product` global is set):
 
-Additionally, if you’re in the context of a product (if the `$product` global is set), you’ll always have the product object available in `product`:
+- `product` - The currently displayed product.
+
+This means that you can directly do something like the following:
 
 ```twig
 {{ product.get_name() }}
+```
+
+#### The `wc` variable
+
+Whenever `wc_get_template()` is called, the arguments that WooCommerce would pass to the template as global variables will be available under the `wc` variable in Twig.
+
+For example, consider the following loop section in the PHP template for the related products:
+
+```php
+<?php foreach ( $related_products as $related_product ) : ?>
+    <?php
+        $post_object = get_post( $related_product->get_id() );
+
+        setup_postdata( $GLOBALS['post'] =& $post_object );
+        
+        wc_get_template_part( 'content', 'product' );
+    ?>
+<?php endforeach; ?>
+```
+
+There’s a `$related_products` variable that is passed to the template. In your Twig template file **views/woocommerce/single-product/related.twig**, you can then access that variable through `wc.related_products`:
+
+```twig
+{% for post in wc.related_products %}
+    {{ fn('wc_get_template_part', 'content', 'product' ) }}
+{% endfor %}
 ```
 
 ## Product global
@@ -122,6 +146,21 @@ Title to display on archive pages. Result of [woocommerce_page_title()](https://
 
 ```twig
 <h1 class="heading-1">{{ title }}</h1>
+```
+
+## Hooks
+
+In Timber, you can call hooks like this:
+
+```twig
+{# Beware, could lead to errors. #}
+{% do action('hook_name', param1, param2) %}
+```
+
+But because of compatibility problems with how Timber works with parameters passed to these hooks, we added our own function. Use `wc_action()` instead of `action()`.
+
+```twig
+{% do wc_action('woocommerce_single_product_summary') %}
 ```
 
 ## Structured Data
@@ -204,7 +243,7 @@ Normally when working with Timber, you’d want to filter post data before you p
 If you don’t want to touch **woocommerce.php**, the other possibility is to filter posts when when they are used.
 
 ```twig
-{% for post in fn('my_filter_posts', posts) %}
+{% for post in fn('my_posts_filter', posts) %}
     {# Display post #}
 {% endfor %}
 ```

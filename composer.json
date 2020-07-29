@@ -26,7 +26,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Timber\\Integrations\\WooCommerce\\": "lib/Timber/Integrations/WooCommerce"
+      "Timber\\Integrations\\WooCommerce\\": "lib/"
     }
   }
 }
