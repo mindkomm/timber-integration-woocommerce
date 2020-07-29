@@ -148,6 +148,21 @@ Title to display on archive pages. Result of [woocommerce_page_title()](https://
 <h1 class="heading-1">{{ title }}</h1>
 ```
 
+## Hooks
+
+In Timber, you can call hooks like this:
+
+```twig
+{# Beware, could lead to errors. #}
+{% do action('hook_name', param1, param2) %}
+```
+
+But because of compatibility problems with how Timber works with parameters passed to these hooks, we added our own function. Use `wc_action()` instead of `action()`.
+
+```twig
+{% do wc_action('woocommerce_single_product_summary') %}
+```
+
 ## Structured Data
 
 WooCommerce uses the hook `woocommerce_shop_loop` to set the structured data for different products. This hook is normally called in **templates/archive-product.php**. You don’t have to call it manually though, because it’s already called when you start looping through posts.

@@ -371,12 +371,18 @@ class WooCommerce {
 		$twig->addFunction( new \Timber\Twig_Function( 'Product', function( $pid ) {
 			return new self::$product_class( $pid );
 		} ) );
-    $twig->addFunction( new \Timber\Twig_Function( 'wc_action', function() {
-      $args = func_get_args();
-      $action = $args[0];
-      array_shift( $args );
-      do_action_ref_array( $action, $args );
-    } ) );
+
+		/**
+		 * Use 'wc_action' as an optimization to 'action', which behaves a bit weird.
+		 *
+		 * @link https://github.com/timber/timber/pull/1773
+		 */
+		$twig->addFunction( new \Timber\Twig_Function( 'wc_action', function() {
+			$args   = func_get_args();
+			$action = $args[0];
+			array_shift( $args );
+			do_action_ref_array( $action, $args );
+		} ) );
 
 		return $twig;
 	}
