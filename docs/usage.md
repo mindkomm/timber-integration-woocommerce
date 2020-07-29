@@ -243,7 +243,7 @@ Normally when working with Timber, you’d want to filter post data before you p
 If you don’t want to touch **woocommerce.php**, the other possibility is to filter posts when when they are used.
 
 ```twig
-{% for post in fn('my_filter_posts', posts) %}
+{% for post in fn('my_posts_filter', posts) %}
     {# Display post #}
 {% endfor %}
 ```
