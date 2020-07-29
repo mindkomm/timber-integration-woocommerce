@@ -1,5 +1,9 @@
 # Timber Integration for WooCommerce
 
+## 0.5.3.1 - 2020-07-29
+
+- Fixed merge bug.
+
 ## 0.5.3 - 2020-07-29
 
 - Added Twig function `wc_action()` that can be used instead of `action()` when calling hooks from Twig. In Twig, you would use it like this: `{% do wc_action('woocommerce_single_product_summary') %}`. This was added to fix compatibility problems when hooks were used with parameters. (See #14, thanks @pascalknecht)
