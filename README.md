@@ -27,7 +27,7 @@ This integrations makes sense if you need to develop a highly customized WooComm
 Here are a couple features that are not yet integrated, but would be good contribution opportunities:
 
 - [ ] Add support for tag templates.
-- [ ] Add support for WooCommerce galleries. Maybe just documentation is needed?
+- [ ] Add support for WooCommerce galleries. Maybe only documentation is needed?
 
 ## Todo
 

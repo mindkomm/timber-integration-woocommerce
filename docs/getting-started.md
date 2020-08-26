@@ -49,7 +49,7 @@ From here on, you should be good to go. The integration hooks into the [context]
 
 If you don’t add any [WooCommerce template files](https://docs.woocommerce.com/document/template-structure/) to your theme, WooCommerce will take the default templates that ship with the WooCommerce plugin. To display a WooCommerce site, it will use **header.php** as well as **footer.php** of your theme.
 
-In most Timber themes, the [**header.php**](https://github.com/timber/starter-theme/blob/master/header.php) looks a little bit like magic. What it does in the context of WooCommerce is:
+In most Timber themes, the [**header.php**](https://github.com/timber/starter-theme/blob/master/theme/header.php) looks a little bit like magic. What it does in the context of WooCommerce is:
 
 - Save Timber’s context in a `$timberContext` global.
 - Start an output buffer with `ob_start()`. An output buffer doesn’t echo out anything, but saves everything in a buffer that you can retrieve later and save it in a variable.
@@ -72,6 +72,7 @@ Add a file `woocommerce.php` to the root your theme with the following contents:
 
 ```php
 <?php
+
 /**
  * woocommerce.php
  *
@@ -81,7 +82,7 @@ Add a file `woocommerce.php` to the root your theme with the following contents:
 Timber\Integrations\WooCommerce\WooCommerce::render_default_template();
 ```
 
-The function `render_default_template()` makes it possible for you to render the default files used by WooCommerce. If you have more complex functionality that you need to apply, you can also copy the contents of the `render_default_template` function into `woocommerce.php` directly and adapt it there.
+The function `render_default_template()` makes it possible for you to render the default files used by WooCommerce. If you have more complex functionality that you need to apply, you can also copy the contents of the `render_default_template()` function into **woocommerce.php** directly and adapt it there.
 
 ## Optional: copy default templates to your theme
 
@@ -98,19 +99,22 @@ your-theme/views/woocommerce/single-product.twig
 If you named your views folder differently, copy the files there. If you want to use a different name than **woocommerce** for the subfolder, you can pass the name as an argument when you initialize the integration:
 
 ```php
-Timber\Integrations\WooCommerce\WooCommerce::init( array(
+Timber\Integrations\WooCommerce\WooCommerce::init( [
     'subfolder' => 'woo',
-) );
+] );
 ```
 
 ## Optional: Use a helper class
 
-You could either loosely add theme support in your and the initialization call for the integration to your **functions.php**, or you can wrap everything in a proper class:
+You could either loosely add theme support and the initialization call for the integration to your **functions.php** file, or you can wrap everything in a class.
 
 ```php
 <?php
 
 class WooCommerceTheme {
+    /**
+     * Inits all hooks.
+     */
     public function init() {
         if ( class_exists( 'WooCommerce' ) ) {
             \Timber\Integrations\WooCommerce\WooCommerce::init();
@@ -120,7 +124,7 @@ class WooCommerceTheme {
         // Timber\Integrations\WooCommerce\WooCommerce::disable_woocommerce_images();
 
         add_action( 'after_setup_theme', [ $this, 'hooks' ] );
-        add_action( 'after_setup_theme', [ $this, 'setup' ] );
+        add_action( 'after_setup_theme', [ $this, 'theme_support' ] );
     }
 
     /**
@@ -143,15 +147,20 @@ class WooCommerceTheme {
     }
 
     /**
-     * Setup.
+     * Theme support.
      */
-    public function setup() {
+    public function theme_support() {
         /**
          * Add theme support for WooCommerce.
          *
          * @link https://docs.woocommerce.com/document/woocommerce-theme-developer-handbook/#section-5
          */
         add_theme_support( 'woocommerce' );
+
+        // Optional.
+        add_theme_support( 'wc-product-gallery-zoom' );
+		add_theme_support( 'wc-product-gallery-lightbox' );
+		add_theme_support( 'wc-product-gallery-slider' );
     }
 }
 ```
