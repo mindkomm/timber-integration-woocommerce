@@ -2,6 +2,7 @@
 
 ## 0.6.0
 
+- Improved internal handling for loading the internal `Product` class.
 - Improved default **archive-product.twig** template and added default templates for **loop/loop-start.twig** and **loop/loop-end.twig**.
 - Added a `$context` parameter to the `render_default_template()` function.
 

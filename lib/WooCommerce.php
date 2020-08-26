@@ -86,18 +86,15 @@ class WooCommerce {
 	 * Setup classes Timber should use when in WooCommerce context.
 	 */
 	public function setup_classes() {
-		/**
-		 * TODO: What if posts of other posts types need to be displayed on the same page?
-		 */
+		// Use a custom post class to for all WooCommerce product posts.
+		add_filter( 'Timber\PostClassMap', array( $this, 'set_product_class' ) );
+
 		if ( ! is_woocommerce() ) {
 			return;
 		}
 
 		// Set a custom iterator to correctly set the $product global.
 		add_filter( 'timber/class/posts_iterator', array( $this, 'set_product_iterator' ) );
-
-		// Use a custom post class to load all posts when in WooCommerce context.
-		add_filter( 'Timber\PostClassMap', array( $this, 'set_product_class' ) );
 	}
 
 	/**
@@ -112,10 +109,22 @@ class WooCommerce {
 	/**
 	 * Set the post class to use for product posts.
 	 *
-	 * @return string
+	 * @todo Timber 2.0: Update this.
+	 *
+	 * @return array
 	 */
-	public function set_product_class() {
-		return self::$product_class;
+	public function set_product_class( $post_class ) {
+		// Use a default post class map if it’s not already a post class array.
+		if ( ! is_array( $post_class ) ) {
+			$post_class = [
+				'post' => $post_class,
+				'page' => $post_class,
+			];
+		}
+
+		return array_merge( $post_class, [
+			'product' => self::$product_class
+		] );
 	}
 
 	/**
@@ -223,7 +232,7 @@ class WooCommerce {
 	}
 
 	public static function convert_objects( $args ) {
-		// Convert WP object to Timber objects
+		// Convert WP objects to Timber objects.
 		foreach ( $args as &$arg ) {
 			if ( $arg instanceof \WP_Term ) {
 				$arg = new \Timber\Term( $arg );
@@ -262,7 +271,24 @@ class WooCommerce {
 
 		// Convert product post collections into PostCollections
 		foreach ( $collections as $collection ) {
-			$args[ $collection ] = new PostCollection( $args[ $collection ], self::$product_class );
+			$posts = $args[ $collection ];
+
+			/**
+			 * A post collection currently needs a WP_Post object to work with.
+			 *
+			 * They will be converted to Product objects in the Post Collection using class maps.
+			 *
+			 * @todo Improve this in Timber 2.0.
+			 */
+			$posts = array_map( function( $post ) {
+				if ( $post instanceof \WC_Product ) {
+					return get_post( $post->get_id() );
+				}
+
+				return $post;
+			}, $posts );
+
+			$args[ $collection ] = new PostCollection( $posts );
 		}
 
 		return $args;
@@ -339,11 +365,11 @@ class WooCommerce {
 			$woocommerce_context = [];
 
 			if ( is_singular( 'product' ) ) {
-				$woocommerce_context['post'] = new Product();
+				$woocommerce_context['post'] = Timber::get_post();
 			} elseif ( is_archive() ) {
 				// Add shop page to context
 				if ( is_shop() ) {
-					$woocommerce_context['post'] = new \Timber\Post( wc_get_page_id( 'shop' ) );
+					$woocommerce_context['post'] = Timber::get_post( wc_get_page_id( 'shop' ) );
 				}
 
 				if ( is_product_taxonomy() ) {
