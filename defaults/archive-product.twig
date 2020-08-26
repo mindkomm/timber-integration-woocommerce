@@ -28,24 +28,26 @@
         {#
          # woocommerce_before_shop_loop hook.
          #
-         # @hooked wc_print_notices - 10
+         # @hooked woocommerce_output_all_notices - 10
          # @hooked woocommerce_result_count - 20
          # @hooked woocommerce_catalog_ordering - 30
          #}
         {% do wc_action('woocommerce_before_shop_loop') %}
 
-        <ul class="products columns-{{ fn('wc_get_loop_prop', 'columns')|e }}">
-            {% if fn('wc_get_loop_prop', 'total') %}
-                {##
-                 # Depending on your WooCommerce display settings, the
-                 # `woocommerce_product_subcategories` function might reset the $wp_query global. By
-                 # calling `have_posts()`, we check if there are posts we can display.
-                 #}
-                {% for post in posts if fn('have_posts') %}
-                    {{ fn('wc_get_template_part', 'content', 'product' ) }}
-                {% endfor %}
-            {% endif %}
-        </ul>
+	    {{ fn('woocommerce_product_loop_start') }}
+
+        {% if fn('wc_get_loop_prop', 'total') %}
+            {##
+             # Depending on your WooCommerce display settings, the
+             # `woocommerce_product_subcategories` function might reset the $wp_query global. By
+             # calling `have_posts()`, we check if there are posts we can display.
+             #}
+            {% for post in posts if fn('have_posts') %}
+                {{ fn('wc_get_template_part', 'content', 'product' ) }}
+            {% endfor %}
+        {% endif %}
+
+	    {{ fn('woocommerce_product_loop_end') }}
 
         {##
          # woocommerce_after_shop_loop hook.

@@ -2,6 +2,7 @@
 
 ## 0.6.0
 
+- Improved default **archive-product.twig** template and added default templates for **loop/loop-start.twig** and **loop/loop-end.twig**.
 - Added a `$context` parameter to the `render_default_template()` function.
 
 ## 0.5.3.1 - 2020-07-29
