@@ -282,11 +282,13 @@ class WooCommerce {
 	 * function.
 	 *
 	 * @api
+	 * @see  WC_Template_Loader::get_template_loader_files()
 	 * @todo Add functionality for product tags
-	 * @see WC_Template_Loader::get_template_loader_files()
+	 *
+	 * @param array $context Initial context.
 	 */
-	public static function render_default_template() {
-		$context = Timber::get_context();
+	public static function render_default_template( $context = [] ) {
+		$context = array_merge( Timber::get_context(), $context );
 
 		$templates = [];
 

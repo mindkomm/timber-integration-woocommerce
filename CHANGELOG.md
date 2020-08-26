@@ -1,5 +1,9 @@
 # Timber Integration for WooCommerce
 
+## 0.6.0
+
+- Added a `$context` parameter to the `render_default_template()` function.
+
 ## 0.5.3.1 - 2020-07-29
 
 - Fixed merge bug.
