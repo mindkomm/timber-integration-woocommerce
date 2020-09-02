@@ -37,13 +37,15 @@
 	    {{ fn('woocommerce_product_loop_start') }}
 
         {% if fn('wc_get_loop_prop', 'total') %}
-            {##
-             # Depending on your WooCommerce display settings, the
-             # `woocommerce_product_subcategories` function might reset the $wp_query global. By
-             # calling `have_posts()`, we check if there are posts we can display.
-             #}
-            {% for post in posts if fn('have_posts') %}
-                {{ fn('wc_get_template_part', 'content', 'product' ) }}
+            {% for post in posts %}
+	            {##
+	             # Depending on your WooCommerce display settings, the
+	             # `woocommerce_product_subcategories` function might reset the $wp_query global. By
+	             # calling `have_posts()`, we check if there are posts we can display.
+	             #}
+	            {% if fn('have_posts') %}
+                    {{ fn('wc_get_template_part', 'content', 'product' ) }}
+	            {% endif %}
             {% endfor %}
         {% endif %}
 
