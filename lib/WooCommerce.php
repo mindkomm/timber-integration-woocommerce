@@ -89,21 +89,30 @@ class WooCommerce {
 		// Use a custom post class to for all WooCommerce product posts.
 		add_filter( 'Timber\PostClassMap', array( $this, 'set_product_class' ) );
 
-		if ( ! is_woocommerce() ) {
-			return;
-		}
-
 		// Set a custom iterator to correctly set the $product global.
-		add_filter( 'timber/class/posts_iterator', array( $this, 'set_product_iterator' ) );
+		add_filter( 'timber/class/posts_iterator', array( $this, 'set_product_iterator' ), 10, 2 );
 	}
 
 	/**
 	 * Set the iterator to use to loop over post collections.
 	 *
+	 * Checks the post type of the first post in the collection and only sets the custom posts
+	 * iterator if it’s a product post.
+	 *
 	 * @return string
 	 */
-	public function set_product_iterator() {
-		return self::$product_iterator;
+	public function set_product_iterator( $posts_iterator, $returned_posts ) {
+		if ( empty( $returned_posts ) ) {
+			return $posts_iterator;
+		}
+
+		$first = $returned_posts[0];
+
+		if ( 'product' === $first->post_type ) {
+			return self::$product_iterator;
+		}
+
+		return $posts_iterator;
 	}
 
 	/**
