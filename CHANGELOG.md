@@ -5,6 +5,7 @@
 - Improved internal handling for loading the internal `Product` class.
 - Improved default **archive-product.twig** template and added default templates for **loop/loop-start.twig** and **loop/loop-end.twig**.
 - Added a `$context` parameter to the `render_default_template()` function.
+- Added a `post` variable to the context in Twig template partials.
 - Fixed a bug when calling `Timber\Post::__construct()` messed up the `$product` global.
 
 ## 0.5.3.1 - 2020-07-29

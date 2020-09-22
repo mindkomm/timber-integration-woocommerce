@@ -194,6 +194,7 @@ class WooCommerce {
 			if ( $product instanceof \WC_Product ) {
 				$context['product'] = $product;
 				$context['post_id'] = $product->get_id();
+				$context['post']    = Timber::get_post( $product->get_id() );
 			}
 
 			/**
@@ -249,6 +250,7 @@ class WooCommerce {
 		if ( $product instanceof \WC_Product ) {
 			$context['product'] = $product;
 			$context['post_id'] = $product->get_id();
+			$context['post']    = Timber::get_post( $product->get_id() );
 		}
 
 		Timber::render( $file, $context );

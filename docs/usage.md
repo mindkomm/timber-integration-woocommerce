@@ -53,18 +53,22 @@ Instead of adding a file **woocommerce/single-product/related.php** to your them
 
 ### Template context
 
-In your Twig templates that you add in the **woocommerce** folder, you’ll have the following variables available:
-
-- `post_id` - The ID of the currently displayed post in the loop.
-
-Additionally, if you’re in the context of a product (if the `$product` global is set):
+In your Twig templates that you add in the **woocommerce** folder, you’ll have the following variables available when you’re in the context of a product (if the `$product` global is set):
 
 - `product` - The currently displayed product.
+- `post_id` - The ID of the currently displayed post in the loop.
+- `post` - The Timber Post instance of the product post.
 
 This means that you can directly do something like the following:
 
 ```twig
 {{ product.get_name() }}
+```
+
+Or if you add custom meta data to your product posts:
+
+```
+{{ post.meta('ingredients') }}
 ```
 
 #### The `wc` variable
