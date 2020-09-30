@@ -182,7 +182,11 @@ class WooCommerce {
 
 		// If a file was found, render that file with the given args, otherwise, return the default location.
 		if ( $file ) {
-			global $product;
+			global $product, $post;
+
+			if ( ! $product ) {
+				$product = wc_setup_product_data( $post );
+			}
 
 			// We can access the context here without performance loss, because it was already cached.
 			$context = Timber::get_context();
@@ -241,7 +245,11 @@ class WooCommerce {
 			return $template;
 		}
 
-		global $product;
+		global $post, $product;
+
+		if ( ! $product ) {
+			$product = wc_setup_product_data( $post );
+		}
 
 		// We can access the context here without performance loss, because it was already cached.
 		$context = Timber::get_context();
