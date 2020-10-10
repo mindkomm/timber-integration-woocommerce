@@ -112,45 +112,35 @@ What is the difference between `post` and `product` in the example above?
 
 ## WooCommerce context
 
-The integration adds some context variables to the global Timber context. When you access the context through `Timber::get_context()`, you’ll get access to the following variables:
+The integration adds some context variables to the global Timber context. When you access the context through `Timber::get_context()`, you’ll get access to certain variables.
 
 ### Global context
 
 Global context variables are always available.
 
-#### cart
-
-The [WooCommerce cart object](https://docs.woocommerce.com/wc-apidocs/class-WC_Cart.html).
+- `cart` – The [WooCommerce cart object](https://docs.woocommerce.com/wc-apidocs/class-WC_Cart.html).
 
 ### Template based context
 
 In addition to the global context, you’ll have other context variables available based on the template file you’re currently working with.
 
-#### post
+- `post` – Will be an instance of `Timber\Product` when a singular product page is displayed (`is_singular('product')`). If the [shop page](https://docs.woocommerce.com/document/woocommerce-pages/) is displayed, it will be a `Timber\Post` with that page as the contents.
+- `term` – Will be set when a shop taxonomy term is displayed (when [`is_product_taxonomy()`](https://docs.woocommerce.com/wc-apidocs/function-is_product_taxonomy.html) applies).
 
-Will be an instance of `Timber\Product` when a singular product page is displayed (`is_singular('product')`). If the [shop page](https://docs.woocommerce.com/document/woocommerce-pages/) is displayed, it will be a `Timber\Post` with that page as the contents.
+    **views/woocommerce/archive-product.twig**
 
-#### term
+    ```twig
+    {% if term.description %}
+        <div class="description">{{ term.description }}
+    {% endif %}
+    ```
+- `title` – Title to display on archive pages. Result of [woocommerce_page_title()](https://docs.woocommerce.com/wc-apidocs/function-woocommerce_page_title.html).
 
-Will be set when a shop taxonomy term is displayed (when [`is_product_taxonomy()`](https://docs.woocommerce.com/wc-apidocs/function-is_product_taxonomy.html) applies).
+    **views/woocommerce/archive-product.twig**
 
-**views/woocommerce/archive-product.twig**
-
-```twig
-{% if term.description %}
-    <div class="description">{{ term.description }}
-{% endif %}
-```
-
-#### title
-
-Title to display on archive pages. Result of [woocommerce_page_title()](https://docs.woocommerce.com/wc-apidocs/function-woocommerce_page_title.html).
-
-**views/woocommerce/archive-product.twig**
-
-```twig
-<h1 class="heading-1">{{ title }}</h1>
-```
+    ```twig
+    <h1 class="heading-1">{{ title }}</h1>
+    ```
 
 ## Hooks
 

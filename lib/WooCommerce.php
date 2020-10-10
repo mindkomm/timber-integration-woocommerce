@@ -103,7 +103,7 @@ class WooCommerce {
 	 * Setup classes Timber should use when in WooCommerce context.
 	 */
 	public function setup_classes() {
-		// Use a custom post class to for all WooCommerce product posts.
+		// Use a custom post class for all WooCommerce product posts.
 		add_filter( 'Timber\PostClassMap', array( $this, 'set_product_class' ) );
 
 		// Set a custom iterator to correctly set the $product global.
