@@ -30,8 +30,6 @@ class ThemeMiniCart {
      * @return array            Fragments to refresh via AJAX.
      */
     public function cart_link_fragment( $fragments ) {
-        global $woocommerce;
-
         $fragments['a.cart-mini-contents'] = Timber::compile(
             'woocommerce/cart/fragment-link.twig',
             [ 'cart' => WC()->cart ]
