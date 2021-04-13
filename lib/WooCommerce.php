@@ -51,8 +51,8 @@ class WooCommerce {
 	 * @param array $args Array of arguments for the Integration.
 	 */
 	public static function init( $args = array() ) {
-		// Bailout in backend
-		if ( is_admin() ) {
+		// Bailout in admin.
+		if ( is_admin() && ! wp_doing_ajax() ) {
 			return;
 		}
 

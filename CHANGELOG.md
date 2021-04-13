@@ -1,6 +1,6 @@
 # Timber Integration for WooCommerce
 
-## 0.6.0
+## 0.6.0 - 2021-04-13
 
 - Improved when this integration applies Product classes and Product Iterators to single posts and lists of posts. This should make it easier to have collections of WooCommerce products and other WordPress post types on the same page. Internally, this integration now uses a Class Map for the `product` post type. This means that you can also [extend](https://timber.github.io/docs/guides/extending-timber/) this integration’s `Timber\Integrations\WooCommerce\Product` class with your own `Product` class.
 - Improved default **archive-product.twig** template and added default templates for **loop/loop-start.twig** and **loop/loop-end.twig**.
@@ -8,6 +8,7 @@
 - Added a `$context` parameter to the `render_default_template()` function. When you pass a context to this function, it will be merged with Timber’s default context.
 - Added a `post` variable to the context in [Twig template partials](https://github.com/mindkomm/timber-integration-woocommerce/blob/master/docs/usage.md#automatic-twig-partial-selection).
 - Fixed a bug when calling `Timber\Post::__construct()` messed up the `$product` global.
+- Fixed a compatibility issue with admin-ajax.
 
 ## 0.5.3.1 - 2020-07-29
 
