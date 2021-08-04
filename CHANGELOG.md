@@ -3,6 +3,7 @@
 ## 0.6.1 - 2021-08-04
 
 - Fixed a couple of issues with `$product` global not being kept in sync.
+- Added small improvements in documentation.
 
 ## 0.6.0 - 2021-04-13
 

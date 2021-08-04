@@ -64,7 +64,7 @@ So, if you want to control how WooCommerce’s content is wrapped, you can edit 
 
 Read on if you want to know how you can override WooCommerce’s default templates.
 
-## Optional: add woocommerce.php
+## Optional: Add woocommerce.php
 
 A **woocommerce.php** file that is placed into the root of your theme has priority over all other templates that you place in the `woocommerce/` folder of your theme. For example, **woocommerce.php** will take precedence over **woocommerce/archive-product.php**. If you use this file, WooCommerce will always use this file to render shop templates.
 
@@ -84,6 +84,10 @@ Timber\Integrations\WooCommerce\WooCommerce::render_default_template();
 
 The function `render_default_template()` makes it possible for you to render the default files used by WooCommerce. If you have more complex functionality that you need to apply, you can also copy the contents of the `render_default_template()` function into **woocommerce.php** directly and adapt it there.
 
+If you don’t add a **woocommerce.php** file, you can still replace template parts that are loaded through `wc_get_template()` or `wc_get_template_part()`, but not whole templates.
+
+### $context
+
 If you want to add additional context variables to your shop pages, you can either use the `timber/context` filter or pass in a context directly to `render_default_template()`
 
 **woocommerce.php**
@@ -102,7 +106,7 @@ WooCommerce::render_default_template( $context );
 
 The `$context` that you pass in here will be merged with the default Timber context.
 
-## Optional: copy default templates to your theme
+## Optional: Copy default templates to your theme
 
 In the **defaults** folder of the integration, you’ll find [default Twig templates](https://github.com/MINDKomm/timber-integration-woocommerce/tree/master/defaults) for a couple of WooCommerce templates. They are examples for how you could translate templates from PHP to Twig.
 
