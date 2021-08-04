@@ -70,23 +70,6 @@ class WooCommerce {
 		self::$product_class    = $args['product_class'];
 		self::$product_iterator = $args['product_iterator'];
 
-		/**
-		 * After WooCommerce set up a the_post filter, we remove it again.
-		 *
-		 * In Timber 1.x, the "the_post" hook is called every time a post is constructed. This can
-		 * lead to various errors. As of Timber 2.x, this won’t be a problem anymore.
-		 *
-		 * We want to control ourselves when we set up the $product global by calling
-		 * wc_setup_product_data() ourselves.
-		 *
-		 * @see wc_setup_product_data()
-		 *
-		 * @todo Fix this for Timber 2.x
-		 */
-		add_action( 'after_setup_theme', function() {
-			remove_action( 'the_post', 'wc_setup_product_data' );
-		}, 12 );
-
 		// For conditional functions like `is_woocommerce()` to work, we need to hook into the 'wp' action.
 		add_action( 'wp', array( $self, 'setup_classes' ), 20 );
 
@@ -358,12 +341,12 @@ class WooCommerce {
 			$post = $context['post'];
 
 			/**
-			 * Setup $product global.
+			 * Sets up $product global and other global variables needed.
 			 *
 			 * We only need to do this for singular templates, because the product iterator does
 			 * this for us in loops.
 			 */
-			wc_setup_product_data( $post );
+			$post->setup();
 
 			// Timber goodies
 			$templates[] = "single-{$post->post_name}.twig";
