@@ -51,6 +51,8 @@ WooCommerce allows you to [override templates](https://docs.woocommerce.com/docu
 
 Instead of adding a file **woocommerce/single-product/related.php** to your theme, you can directly add a file **views/woocommerce/single-product/related.twig**, which the integration will render instead of the PHP file.
 
+There’s an exception for this: You can’t add a **single-product-reviews.twig** file that overrides the **single-product-reviews.php** file, because reviews are loaded differently than normal WooCommerce templates. Unfortunately, we can’t hook into it. The solution is to add **single-product-reviews.php** to your theme and update it there.
+
 ### Template context
 
 In your Twig templates that you add in the **woocommerce** folder, you’ll have the following variables available when you’re in the context of a product (if the `$product` global is set):
