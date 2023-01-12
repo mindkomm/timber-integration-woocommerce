@@ -232,6 +232,59 @@ It’s up to you then, whether you want to create a `loop/loop-start.twig` and `
 </div>
 ```
 
+## Working with Post Collections
+
+If you have a collection of product posts that you want to convert to Timber posts, you can use `Timber::get_posts()`. Timber will automatically return `Timber\Integration\WooCommerce\Product` posts.
+
+Then, you will have to wrap your posts in a `Timber\PostCollection`. That will make sure that the correct `$product` global will be set up when you loop over your posts. (If you don’t do this, you will run into errors where the permalink or the price of all products in a loop will be the same.)
+
+Here’s an example where we get the featured products and convert them to a collection you can use.
+
+```php
+use Timber\PostCollection;
+
+$posts = Timber::get_posts( wc_get_featured_product_ids() );
+$posts = new PostCollection( $posts );
+```
+
+You could use this to display the posts on a page.
+
+**page.php**
+
+```php
+<?php
+
+use Timber\PostCollection;
+
+$context = Timber::get_context();
+
+$context['featured_products'] = new PostCollection(
+    Timber::get_posts( wc_get_featured_product_ids() )
+);
+
+Timber::render( 'page.twig', $context );
+```
+
+**page.twig**
+
+```twig
+{{ include('woocommerce/products.twig', {
+    posts: featured_products
+}) }}
+```
+
+**woocommerce/products.twig**
+
+```twig
+{{ fn('woocommerce_product_loop_start') }}
+
+{% for post in posts %}
+    {{ fn('wc_get_template_part', 'content', 'product' ) }}
+{% endfor %}
+
+{{ fn('woocommerce_product_loop_end') }}
+```
+
 ## Filter posts from Twig
 
 Normally when working with Timber, you’d want to filter post data before you pass it to a Twig template. With WooCommerce, this is maybe a little more complicated. You could write your own **woocommerce.php** that handles all the data. But remember, we want to interfere with WooCommerce as little as possible.
