@@ -1,6 +1,10 @@
 # Timber Integration for WooCommerce
 
-## 0.6.1 - 2021-08-04
+## 0.7.0 - 2023-01-13
+
+- Updated PHP requirements to allow PHP 8.0 and higher.
+
+## 0.6.1 - 2023-01-13
 
 - Fixed a couple of issues with `$product` global not being kept in sync.
 - Added small improvements in documentation.
