@@ -1,5 +1,9 @@
 # Timber Integration for WooCommerce
 
+## 0.7.1 - 2023-01-13
+
+- Fixed a bug when product global is not present on singular product pages.
+
 ## 0.7.0 - 2023-01-13
 
 - Updated PHP requirements to allow PHP 8.0 and higher.

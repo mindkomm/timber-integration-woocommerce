@@ -76,6 +76,9 @@ class WooCommerce {
 		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
 		add_filter( 'wc_get_template_part', array( $self, 'maybe_render_twig_template_part' ), 10, 3 );
 
+		// Fixes product global for singular product pages.
+		add_action( 'woocommerce_before_main_content', array( $self, 'maybe_setup_product_data' ), 1 );
+
 		// Add WooCommerce context data to normal context.
 		add_filter( 'timber/context', array( $self, 'get_woocommerce_context' ) );
 
@@ -165,6 +168,7 @@ class WooCommerce {
 
 		// If a file was found, render that file with the given args, otherwise, return the default location.
 		if ( $file ) {
+			// Setup missing product global.
 			global $product, $post;
 
 			if ( ! $product ) {
@@ -250,6 +254,29 @@ class WooCommerce {
 		return false;
 	}
 
+	/**
+	 * Fixes product global for singular product pages.
+	 *
+	 * On singular product pages, the product global is set up when the template loads. But it is
+	 * reset when Timber calls the 'the_post' action repeatedly on objects that are not
+	 * WooCommerce posts.
+	 *
+	 * By hooking into the 'woocommerce_before_main_content' action, we can set up the product
+	 * global again.
+	 *
+	 * @since 0.6.2
+	 * @link https://github.com/timber/timber/issues/1639
+	 * @see Remove this for Timber 2.0?
+	 */
+	public function maybe_setup_product_data() {
+		// Setup missing product global.
+		global $product, $post;
+
+		if ( ! $product ) {
+			$product = wc_setup_product_data( $post );
+		}
+	}
+
 	public static function convert_objects( $args ) {
 		// Convert WP objects to Timber objects.
 		foreach ( $args as &$arg ) {
@@ -321,7 +348,7 @@ class WooCommerce {
 	 * the corresponding Twig file. It builds up an array with Twig templates to check for. Timber
 	 * will use the first Twig file that exists. In addition to the default WooCommerce template
 	 * files, there are some opininated "Goodies" that can make your life easier. E.g., you don’t
-	 * have to to use *woocommerce/single-product.twig*, but can use *woocommerce/single.twig*.
+	 * have to use *woocommerce/single-product.twig*, but can use *woocommerce/single.twig*.
 	 *
 	 * If you have your own solution going on or need to do more checks, you don’t have to call this
 	 * function.
