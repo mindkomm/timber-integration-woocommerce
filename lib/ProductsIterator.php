@@ -58,6 +58,7 @@ class ProductsIterator extends \Timber\PostsIterator {
 	 *
 	 * @since 2.0.0
 	 */
+	#[\ReturnTypeWillChange]
 	public function next() {
 		/**
 		 * The `loop_end` action is not the only thing we do to improve compatibility. There’s
