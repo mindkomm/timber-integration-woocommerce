@@ -5,7 +5,6 @@ namespace Timber\Integrations\WooCommerce;
 use Timber\Loader;
 use Timber\LocationManager;
 use Timber\PostCollection;
-use Timber\Term;
 use Timber\Timber;
 
 /**
@@ -22,13 +21,6 @@ class WooCommerce {
 	 * @var string Class name.
 	 */
 	public static $product_class;
-
-	/**
-	 * Class to use when iterating over arrays of WooCommerce product posts.
-	 *
-	 * @var string Class name.
-	 */
-	public static $product_iterator;
 
 	/**
 	 * The subfolder to use in the Twig template file folder.
@@ -68,7 +60,6 @@ class WooCommerce {
 
 		self::$subfolder        = trailingslashit( $args['subfolder'] );
 		self::$product_class    = $args['product_class'];
-		self::$product_iterator = $args['product_iterator'];
 
 		// For conditional functions like `is_woocommerce()` to work, we need to hook into the 'wp' action.
 		add_action( 'wp', array( $self, 'setup_classes' ), 20 );
@@ -81,8 +72,6 @@ class WooCommerce {
 
 		// Add WooCommerce context data to normal context.
 		add_filter( 'timber/context', array( $self, 'get_woocommerce_context' ) );
-
-		add_action( 'timber/twig/functions', array( $self, 'add_timber_functions' ) );
 	}
 
 	/**
@@ -90,53 +79,18 @@ class WooCommerce {
 	 */
 	public function setup_classes() {
 		// Use a custom post class for all WooCommerce product posts.
-		add_filter( 'Timber\PostClassMap', array( $this, 'set_product_class' ) );
-
-		// Set a custom iterator to correctly set the $product global.
-		add_filter( 'timber/class/posts_iterator', array( $this, 'set_product_iterator' ), 10, 2 );
-	}
-
-	/**
-	 * Set the iterator to use to loop over post collections.
-	 *
-	 * Checks the post type of the first post in the collection and only sets the custom posts
-	 * iterator if it’s a product post.
-	 *
-	 * @return string
-	 */
-	public function set_product_iterator( $posts_iterator, $returned_posts ) {
-		if ( empty( $returned_posts ) ) {
-			return $posts_iterator;
-		}
-
-		$first = $returned_posts[0];
-
-		if ( 'product' === $first->post_type ) {
-			return self::$product_iterator;
-		}
-
-		return $posts_iterator;
+		add_filter( 'timber/post/classmap', array( $this, 'set_product_class' ) );
 	}
 
 	/**
 	 * Set the post class to use for product posts.
 	 *
-	 * @todo Timber 2.0: Update this.
-	 *
 	 * @return array
 	 */
-	public function set_product_class( $post_class ) {
-		// Use a default post class map if it’s not already a post class array.
-		if ( ! is_array( $post_class ) ) {
-			$post_class = [
-				'post' => $post_class,
-				'page' => $post_class,
-			];
-		}
+	public function set_product_class( $classmap ) {
+		$classmap['product'] = self::$product_class;
 
-		return array_merge( $post_class, [
-			'product' => self::$product_class
-		] );
+		return $classmap;
 	}
 
 	/**
@@ -166,8 +120,11 @@ class WooCommerce {
 		$loader = new Loader( $caller );
 		$file   = $loader->choose_template( $template_name_twig );
 
-		// If a file was found, render that file with the given args, otherwise, return the default location.
-		if ( $file ) {
+		// If a file was found, render that file with the given args. Otherwise,
+		// return the default location.
+		if ( ! $file ) {
+			return $located;
+		}
 			// Setup missing product global.
 			global $product, $post;
 
@@ -176,7 +133,7 @@ class WooCommerce {
 			}
 
 			// We can access the context here without performance loss, because it was already cached.
-			$context = Timber::get_context();
+			$context = Timber::context();
 
 			// Add the arguments for the WooCommerce template.
 			$context['wc'] = self::convert_objects( $args );
@@ -187,6 +144,13 @@ class WooCommerce {
 				$context['post_id'] = $product->get_id();
 				$context['post']    = Timber::get_post( $product->get_id() );
 			}
+
+		// Set up the post again. When we use Timber::context(), then setup()
+		// is called on singular post templates, which would cause WooCommerce
+		// to set up the queried object as the $product global.
+		if ( $context['post'] instanceof \Timber\Post ) {
+			$context['post']->setup();
+		}
 
 			/**
 			 * TODO: Add documentation for this.
@@ -201,9 +165,6 @@ class WooCommerce {
 			 */
 			return __DIR__ . '/template_empty.php';
 		}
-
-		return $located;
-	}
 
 	/**
 	 * Renders a Twig template instead of a PHP template when calling wc_get_template_part().
@@ -238,14 +199,22 @@ class WooCommerce {
 			$product = wc_setup_product_data( $post );
 		}
 
-		// We can access the context here without performance loss, because it was already cached.
-		$context = Timber::get_context();
+		// We can access the context here without performance loss, because it
+		// was already cached.
+		$context = Timber::context();
 
 		// Add current product to context.
 		if ( $product instanceof \WC_Product ) {
 			$context['product'] = $product;
 			$context['post_id'] = $product->get_id();
 			$context['post']    = Timber::get_post( $product->get_id() );
+		}
+
+		// Set up the post again. When we use Timber::context(), then setup()
+		// is called on singular post templates, which would cause WooCommerce
+		// to set up the queried object as the $product global.
+		if ( $context['post'] instanceof \Timber\Post ) {
+			$context['post']->setup();
 		}
 
 		Timber::render( $file, $context );
@@ -278,10 +247,10 @@ class WooCommerce {
 	}
 
 	public static function convert_objects( $args ) {
-		// Convert WP objects to Timber objects.
+		// Convert WordPress objects to Timber objects.
 		foreach ( $args as &$arg ) {
 			if ( $arg instanceof \WP_Term ) {
-				$arg = new \Timber\Term( $arg );
+				$arg = Timber::get_term( $arg );
 			}
 		}
 
@@ -294,6 +263,7 @@ class WooCommerce {
 	 * Convert arrays of WooCommerce product objects to PostCollections of Timber Product posts.
 	 *
 	 * @param array $args Template arguments
+	 *
 	 * @return array
 	 */
 	public static function maybe_convert_to_collection( $args ) {
@@ -303,7 +273,8 @@ class WooCommerce {
 		foreach ( $args as $key => $arg ) {
 			// Bailout if not array or not array of WC_Product objects
 			if ( ! is_array( $arg ) || empty( $arg ) || ! isset( $arg[0] )
-				|| ! is_object( $arg[0] ) || ! is_a( $arg[0], 'WC_Product' ) ) {
+			     || ! is_object( $arg[0] ) || ! is_a( $arg[0], 'WC_Product' )
+			) {
 				continue;
 			}
 
@@ -322,9 +293,7 @@ class WooCommerce {
 			/**
 			 * A post collection currently needs a WP_Post object to work with.
 			 *
-			 * They will be converted to Product objects in the Post Collection using class maps.
-			 *
-			 * @todo Improve this in Timber 2.0.
+			 * They will be converted to Product objects in the Post Collection using class maps.*
 			 */
 			$posts = array_map( function( $post ) {
 				if ( $post instanceof \WC_Product ) {
@@ -334,7 +303,7 @@ class WooCommerce {
 				return $post;
 			}, $posts );
 
-			$args[ $collection ] = new PostCollection( $posts );
+			$args[ $collection ] = Timber::get_posts( $posts );
 		}
 
 		return $args;
@@ -354,13 +323,14 @@ class WooCommerce {
 	 * function.
 	 *
 	 * @api
+	 * @param array $context Initial context.
+	 *
 	 * @see  WC_Template_Loader::get_template_loader_files()
 	 * @todo Add functionality for product tags
 	 *
-	 * @param array $context Initial context.
 	 */
 	public static function render_default_template( $context = [] ) {
-		$context = array_merge( Timber::get_context(), $context );
+		$context = array_merge( Timber::context(), $context );
 
 		$templates = [];
 
@@ -427,7 +397,7 @@ class WooCommerce {
 				}
 
 				if ( is_product_taxonomy() ) {
-					$woocommerce_context['term'] = new Term( get_queried_object() );
+					$woocommerce_context['term'] = Timber::get_term( get_queried_object() );
 				}
 			}
 
@@ -440,33 +410,6 @@ class WooCommerce {
 		$context = array_merge( $context, self::$context_cache );
 
 		return $context;
-	}
-
-	/**
-	 * Make function available in Twig.
-	 *
-	 * @param \Twig_Environment $twig Twig Environment.
-	 *
-	 * @return mixed
-	 */
-	public function add_timber_functions( $twig ) {
-		$twig->addFunction( new \Timber\Twig_Function( 'Product', function( $pid ) {
-			return new self::$product_class( $pid );
-		} ) );
-
-		/**
-		 * Use 'wc_action' as an optimization to 'action', which behaves a bit weird.
-		 *
-		 * @link https://github.com/timber/timber/pull/1773
-		 */
-		$twig->addFunction( new \Timber\Twig_Function( 'wc_action', function() {
-			$args   = func_get_args();
-			$action = $args[0];
-			array_shift( $args );
-			do_action_ref_array( $action, $args );
-		} ) );
-
-		return $twig;
 	}
 
 	/**

@@ -2,14 +2,15 @@
 
 namespace Timber\Integrations\WooCommerce;
 
-use Timber\Term;
+use Timber\Post;
+use Timber\Timber;
 
 /**
  * Class Product
  *
  * @api
  */
-class Product extends \Timber\Post {
+class Product extends Post {
 	/**
 	 * @var null|\WC_Product
 	 */
@@ -21,13 +22,13 @@ class Product extends \Timber\Post {
 	 * @example
 	 * ```php
 	 * // Get a product post by ID
-	 * new Timber\Integrations\WooCommerce\Product( 354 );
+	 * Timber::get_post( 354 );
 	 * ```
 	 *
-	 * You can also use the `Product` class in Twig.
+	 * You can also use the `get_post` function in Twig.
 	 *
 	 * ```twig
-	 * {% set product = Product(354) %}
+	 * {% set product = get_post(354) %}
 	 * ```
 	 *
 	 * @api
@@ -57,51 +58,6 @@ class Product extends \Timber\Post {
 	}
 
 	/**
-	 * Sets up the product data.
-	 *
-	 * @todo Check if this is still needed with Timber 2.0.
-	 *
-	 * @param int $loop_index
-	 *
-	 * @return $this
-	 */
-	public function setup( $loop_index = 0 ) {
-		global $wp_query;
-
-		// Mimick WordPress behavior to improve compatibility with third party plugins.
-		$wp_query->in_the_loop = true;
-
-		/**
-		 * The setup_postdata() function will call the 'the_post' action. WooCommerce hooks into
-		 * the 'the_post' action to call wc_setup_product_data(). That’s why we don’t have to
-		 * explicitly call it here.
-		 */
-		$wp_query->setup_postdata( $this->ID );
-
-        return $this;
-    }
-
-    /**
-	 * Resets variables after post has been used.
-	 *
-	 * This function will be called automatically when you loop over Timber posts.
-     *
-     * @todo Check if this is still needed with Timber 2.0.
-	 *
-	 * @api
-	 * @since 2.0.0
-	 *
-	 * @return \Timber\Post The post instance.
-	 */
-	public function teardown() {
-		global $wp_query;
-
-		$wp_query->in_the_loop = false;
-
-		return $this;
-	}
-
-	/**
 	 * Get the first assigned product category.
 	 *
 	 * @api
@@ -112,7 +68,7 @@ class Product extends \Timber\Post {
 
 		if ( $categories ) {
 			$category = reset( $categories );
-			$category = new Term( $category );
+			$category = Timber::get_term( $category );
 
 			return $category;
 		}
@@ -162,11 +118,9 @@ class Product extends \Timber\Post {
 				)
 			);
 
-			// Turn WP_Terms into instances of Timber\Term
+			// Turn WordPress terms into instances of Timber\Term.
 			if ( $convert_terms ) {
-				$terms = array_map( function( $term ) {
-					return new Term( $term );
-				}, $terms );
+				$terms = Timber::get_terms( $terms );
 			}
 
 			return $terms;

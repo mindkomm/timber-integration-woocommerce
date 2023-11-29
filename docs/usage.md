@@ -114,7 +114,7 @@ What is the difference between `post` and `product` in the example above?
 
 ## WooCommerce context
 
-The integration adds some context variables to the global Timber context. When you access the context through `Timber::get_context()`, you’ll get access to certain variables.
+The integration adds some context variables to the global Timber context. When you access the context through `Timber::context()`, you’ll get access to certain variables.
 
 ### Global context
 
@@ -143,21 +143,6 @@ In addition to the global context, you’ll have other context variables availab
     ```twig
     <h1 class="heading-1">{{ title }}</h1>
     ```
-
-## Hooks
-
-In Timber, you can call hooks like this:
-
-```twig
-{# Beware, could lead to errors. #}
-{% do action('hook_name', param1, param2) %}
-```
-
-But because of compatibility problems with how Timber works with parameters passed to these hooks, we added our own function. Use `wc_action()` instead of `action()`.
-
-```twig
-{% do wc_action('woocommerce_single_product_summary') %}
-```
 
 ## Structured Data
 
@@ -256,7 +241,7 @@ You could use this to display the posts on a page.
 
 use Timber\PostCollection;
 
-$context = Timber::get_context();
+$context = Timber::context();
 
 $context['featured_products'] = new PostCollection(
     Timber::get_posts( wc_get_featured_product_ids() )
