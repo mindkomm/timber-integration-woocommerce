@@ -64,6 +64,14 @@ class Product extends Post {
 		return $post;
 	}
 
+	public function setup() {
+		parent::setup();
+
+		if ( ! is_singular( 'product' ) && did_action( 'woocommerce_before_shop_loop' ) > 0 ) {
+			do_action( 'woocommerce_shop_loop' );
+		}
+	}
+
 	/**
 	 * Get the first assigned product category.
 	 *
