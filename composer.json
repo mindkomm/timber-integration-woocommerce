@@ -22,7 +22,7 @@
     "docs": "https://github.com/mindkomm/timber-integration-woocommerce#documentation"
   },
   "require": {
-    "php": "^7.2 || ^8.0",
+    "php": "^7.4 || ^8.0",
     "timber/timber": "^2.0"
   },
   "autoload": {

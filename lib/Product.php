@@ -4,6 +4,7 @@ namespace Timber\Integrations\WooCommerce;
 
 use Timber\Post;
 use Timber\Timber;
+use WP_Post;
 
 /**
  * Class Product
@@ -32,21 +33,25 @@ class Product extends Post {
 	 * ```
 	 *
 	 * @api
-	 * @param mixed $post A post object or an object of class WC_Product or a class that inherits from WC_Product.
+	 * @param mixed $wp_post A post object or an object of class WC_Product or
+	 *                       a class that inherits from WC_Product.
+	 * @return \Timber\Post
 	 */
-	public function __construct( $post = null ) {
+	public static function build( WP_Post $wp_post): self {
+		$post = parent::build( $wp_post );
+
 		/**
-		 * Check if the object is an instance of WC_Product or inherits from WC_Product.
+		 * Check if the object is an instance of WC_Product or inherits from
+		 * WC_Product.
 		 *
-		 * In that case, get the post ID from the product and then let Timber get the post through the parent
+		 * In that case, get the post ID from the product and then let Timber
+		 * get the post through the parent
 		 * constructor of this class.
 		 */
-		if ( $post instanceof \WC_Product ) {
-			parent::__construct( $post->get_id() );
+		if ( $wp_post instanceof \WC_Product ) {
 			$product = $post;
 		} else {
-			parent::__construct( $post );
-			$product = wc_get_product( $this->ID );
+			$product = wc_get_product( $post->ID );
 		}
 
 		/**
@@ -54,7 +59,9 @@ class Product extends Post {
 		 */
 		$product = apply_filters( 'timber/integration/woocommerce/product', $product, $post );
 
-		$this->product = $product;
+		$post->product = $product;
+
+		return $post;
 	}
 
 	/**

@@ -61,14 +61,12 @@ class WooCommerce {
 		self::$subfolder        = trailingslashit( $args['subfolder'] );
 		self::$product_class    = $args['product_class'];
 
-		// For conditional functions like `is_woocommerce()` to work, we need to hook into the 'wp' action.
+		// For conditional functions like `is_woocommerce()` to work, we need to
+		// hook into the 'wp' action.
 		add_action( 'wp', array( $self, 'setup_classes' ), 20 );
 
 		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
 		add_filter( 'wc_get_template_part', array( $self, 'maybe_render_twig_template_part' ), 10, 3 );
-
-		// Fixes product global for singular product pages.
-		add_action( 'woocommerce_before_main_content', array( $self, 'maybe_setup_product_data' ), 1 );
 
 		// Add WooCommerce context data to normal context.
 		add_filter( 'timber/context', array( $self, 'get_woocommerce_context' ) );
@@ -94,7 +92,8 @@ class WooCommerce {
 	}
 
 	/**
-	 * Renders a Twig template instead of a PHP template when calling wc_get_template().
+	 * Renders a Twig template instead of a PHP template when calling
+	 * wc_get_template().
 	 *
 	 * Looks for a Twig template in the theme folder first.
 	 *
@@ -108,7 +107,8 @@ class WooCommerce {
 		/**
 		 * Build template name Timber should look for.
 		 *
-		 * The path is prepended with the subfolder and the PHP file extension replaced with '.twig'.
+		 * The path is prepended with the subfolder and the PHP file extension
+		 * replaced with '.twig'.
 		 *
 		 * TODO: Is str_replace() too naive here?
 		 */
@@ -132,7 +132,8 @@ class WooCommerce {
 				$product = wc_setup_product_data( $post );
 			}
 
-			// We can access the context here without performance loss, because it was already cached.
+		// We can access the context here without performance loss, because it
+		// was already cached.
 			$context = Timber::context();
 
 			// Add the arguments for the WooCommerce template.
@@ -159,15 +160,12 @@ class WooCommerce {
 
 			Timber::render( $file, $context );
 
-			/**
-			 * TODO: Will this work in all environments?
-			 * TODO: Is there a better way to do it than to pass an empty file to an include() function?
-			 */
 			return __DIR__ . '/template_empty.php';
 		}
 
 	/**
-	 * Renders a Twig template instead of a PHP template when calling wc_get_template_part().
+	 * Renders a Twig template instead of a PHP template when calling
+	 * wc_get_template_part().
 	 *
 	 * @since 0.6.0
 	 *
@@ -223,30 +221,11 @@ class WooCommerce {
 		return false;
 	}
 
-	/**
-	 * Fixes product global for singular product pages.
-	 *
-	 * On singular product pages, the product global is set up when the template loads. But it is
-	 * reset when Timber calls the 'the_post' action repeatedly on objects that are not
-	 * WooCommerce posts.
-	 *
-	 * By hooking into the 'woocommerce_before_main_content' action, we can set up the product
-	 * global again.
-	 *
-	 * @since 0.6.2
-	 * @link https://github.com/timber/timber/issues/1639
-	 * @see Remove this for Timber 2.0?
-	 */
-	public function maybe_setup_product_data() {
-		// Setup missing product global.
-		global $product, $post;
-
-		if ( ! $product ) {
-			$product = wc_setup_product_data( $post );
-		}
+	public static function convert_objects( $args ) {
+		if ( ! is_array( $args ) || empty( $args ) ) {
+			return $args;
 	}
 
-	public static function convert_objects( $args ) {
 		// Convert WordPress objects to Timber objects.
 		foreach ( $args as &$arg ) {
 			if ( $arg instanceof \WP_Term ) {
