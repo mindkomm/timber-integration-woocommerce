@@ -33,16 +33,6 @@ add_theme_support( 'wc-product-gallery-lightbox' );
 add_theme_support( 'wc-product-gallery-slider' );
 ```
 
-### Initialize integration
-
-**functions.php**
-
-```php
-if ( class_exists( 'WooCommerce' ) ) {
-    Timber\Integrations\WooCommerce\WooCommerce::init();
-}
-```
-
 From here on, you should be good to go. The integration hooks into the [context](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/usage.md#woocommerce-context) and adds features specific for WooCommerce. If you’re starting your theme from scratch, you’ll probably want to look at the following optional sections. You might also benefit if you already have Timber theme.
 
 ## Understanding how WooCommerce uses page-plugin.twig
@@ -181,8 +171,8 @@ class WooCommerceTheme {
 
         // Optional.
         add_theme_support( 'wc-product-gallery-zoom' );
-		add_theme_support( 'wc-product-gallery-lightbox' );
-		add_theme_support( 'wc-product-gallery-slider' );
+        add_theme_support( 'wc-product-gallery-lightbox' );
+        add_theme_support( 'wc-product-gallery-slider' );
     }
 }
 ```

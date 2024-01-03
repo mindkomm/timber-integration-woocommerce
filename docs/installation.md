@@ -24,3 +24,17 @@ require_once 'vendor/autoload.php';
 ```
 
 You can’t install the integration as a WordPress plugin.
+
+### Initialize integration
+
+After the installation, you need to initizalize the integration.
+
+**functions.php**
+
+```php
+add_filter( 'timber/integrations', function ( array $integrations ): array {
+    $integrations[] = new \Timber\Integrations\WooCommerce\WooCommerceIntegration();
+
+    return $integrations;
+} );
+```
