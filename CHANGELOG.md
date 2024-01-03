@@ -1,5 +1,61 @@
 # Timber Integration for WooCommerce
 
+## 1.0.0
+
+### Breaking changes 💥
+
+- Added support for [Timber 2.0](https://github.com/timber/timber/releases/tag/2.0.0) and removes support for Timber 1.x.
+- Bumped minimum required PHP version to 7.4.
+- Updated how to set up the integration.
+- Removed `Product()` function in Twig. Use `get_post()` instead.
+- Removed `wc_action()` Twig function. Use `{% do action() %}` instead of `{% do wc_action() %}`.
+
+### Other changes
+
+- Added support for PHP 8.0 and higher.
+
+### New way to set up integration
+
+**🚫 Before**
+
+```php
+if ( class_exists( 'WooCommerce' ) ) {
+    Timber\Integrations\WooCommerce\WooCommerce::init();
+}
+```
+
+**✅ After**
+
+```php
+add_filter( 'timber/integrations', function ( array $integrations ): array {
+    $integrations[] = new \Timber\Integrations\WooCommerce\WooCommerceIntegration();
+
+    return $integrations;
+} );
+```
+
+### Updated Twig functions
+
+**🚫 Before**
+
+```twig
+# Getting a product
+<img src="{{ Product(id).thumbnail.src|resize(200, 200) }}">
+
+# Calling an action
+{% do wc_action('woocommerce_before_shop_loop') %}
+```
+
+**✅ After**
+
+```twig
+# Getting a product
+<img src="{{ get_post(id).thumbnail.src|resize(200, 200) }}">
+
+# Calling an action
+{% do action('woocommerce_before_shop_loop') %}
+```
+
 ## 0.7.1 - 2023-01-13
 
 - Fixed a bug when product global is not present on singular product pages.
