@@ -281,7 +281,7 @@ class WooCommerce {
 	 * Render default Twig templates.
 	 *
 	 * This function can be called from `woocommerce.php` template file in the root of the theme. It
-	 * mimicks the logic used by WooCommerce to sort out which template to load and tries to load
+	 * mimics the logic used by WooCommerce to sort out which template to load and tries to load
 	 * the corresponding Twig file. It builds up an array with Twig templates to check for. Timber
 	 * will use the first Twig file that exists. In addition to the default WooCommerce template
 	 * files, there are some opininated "Goodies" that can make your life easier. E.g., you don’t
