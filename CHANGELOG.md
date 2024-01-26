@@ -20,7 +20,7 @@
 
 ```php
 if ( class_exists( 'WooCommerce' ) ) {
-    Timber\Integrations\WooCommerce\WooCommerce::init();
+    \Timber\Integrations\WooCommerce\WooCommerce::init();
 }
 ```
 
@@ -31,6 +31,52 @@ add_filter( 'timber/integrations', function ( array $integrations ): array {
     $integrations[] = new \Timber\Integrations\WooCommerce\WooCommerceIntegration();
 
     return $integrations;
+} );
+```
+
+### Removed arguments for the integration
+
+If you passed options to the `Timber\Integrations\WooCommerce\WooCommerce::init()`, you will have to change how you pass them. The new way to init the integration doesn’t take any arguments anymore.
+
+#### Use a custom class for products
+
+**🚫 Before**
+
+```php
+Timber\Integrations\WooCommerce\WooCommerce::init( [
+    'product_class' => 'MyProductClass',
+] );
+```
+
+**✅ After**
+
+```php
+add_filter( 'timber/product/classmap', function( $classmap ) {
+    $classmap['product'] = 'MyProductClass';
+
+    return $classmap;
+}, 20 );
+```
+
+#### No more custom product iterator
+
+Post iterators were removed in Timber 2.0. If you’ve used the `product_iterator` argument, you can use the `setup()` and `teardown()` methods on your custom product class instead.
+
+#### Set a subfolder for the Twig templates
+
+**🚫 Before**
+
+```php
+Timber\Integrations\WooCommerce\WooCommerce::init( [
+    'subfolder' => 'woo',
+] );
+```
+
+**✅ After**
+
+```php
+add_filter( 'timber/woocommerce/views_folder', function( $subfolder ) {
+    return 'woo';
 } );
 ```
 

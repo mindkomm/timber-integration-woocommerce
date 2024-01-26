@@ -108,12 +108,12 @@ your-theme/views/woocommerce/content-product.twig
 your-theme/views/woocommerce/single-product.twig
 ```
 
-If you named your views folder differently, copy the files there. If you want to use a different name than **woocommerce** for the subfolder, you can pass the name as an argument when you initialize the integration:
+If you named your views folder differently, copy the files there. If you want to use a different name than **woocommerce** for the subfolder, you can use the `timber/woocommerce/views_folder` filter.
 
 ```php
-Timber\Integrations\WooCommerce\WooCommerce::init( [
-    'subfolder' => 'woo',
-] );
+add_filter( 'timber/woocommerce/views_folder', function( $subfolder ) {
+    return 'woo';
+} );
 ```
 
 ## Optional: Use a helper class

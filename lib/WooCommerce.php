@@ -4,7 +4,6 @@ namespace Timber\Integrations\WooCommerce;
 
 use Timber\Loader;
 use Timber\LocationManager;
-use Timber\PostCollection;
 use Timber\Timber;
 
 /**
@@ -15,13 +14,6 @@ use Timber\Timber;
  * @api
  */
 class WooCommerce {
-	/**
-	 * Class to use for WooCommerce Product posts.
-	 *
-	 * @var string Class name.
-	 */
-	public static $product_class;
-
 	/**
 	 * The subfolder to use in the Twig template file folder.
 	 *
@@ -42,7 +34,7 @@ class WooCommerce {
 	 * @api
 	 * @param array $args Array of arguments for the Integration.
 	 */
-	public static function init( $args = array() ) {
+	public static function init() {
 		// Bailout in admin.
 		if ( is_admin() && ! wp_doing_ajax() ) {
 			return;
@@ -50,16 +42,13 @@ class WooCommerce {
 
 		$self = new self();
 
-		$defaults = array(
-			'subfolder'        => 'woocommerce',
-			'product_class'    => '\Timber\Integrations\WooCommerce\Product',
-			'product_iterator' => '\Timber\Integrations\WooCommerce\ProductsIterator',
-		);
-
-		$args = wp_parse_args( $args, $defaults );
-
-		self::$subfolder        = trailingslashit( $args['subfolder'] );
-		self::$product_class    = $args['product_class'];
+		/**
+		 * Filters the subfolder to use in the Twig template file folder.
+		 *
+		 * @param string $subfolder Subfolder name.
+		 */
+		self::$subfolder = apply_filters( 'theme/woocommerce/views_folder', 'woocommerce' );
+		self::$subfolder = trailingslashit( self::$subfolder );
 
 		// For conditional functions like `is_woocommerce()` to work, we need to
 		// hook into the 'wp' action.
@@ -86,7 +75,7 @@ class WooCommerce {
 	 * @return array
 	 */
 	public function set_product_class( $classmap ) {
-		$classmap['product'] = self::$product_class;
+		$classmap['product'] = Product::class;
 
 		return $classmap;
 	}
@@ -316,12 +305,6 @@ class WooCommerce {
 		if ( is_singular( 'product' ) ) {
 			$post = $context['post'];
 
-			/**
-			 * Sets up $product global and other global variables needed.
-			 *
-			 * We only need to do this for singular templates, because the product iterator does
-			 * this for us in loops.
-			 */
 			$post->setup();
 
 			// Timber goodies
