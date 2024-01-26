@@ -70,6 +70,8 @@ class Product extends Post {
 		if ( ! is_singular( 'product' ) && did_action( 'woocommerce_before_shop_loop' ) > 0 ) {
 			do_action( 'woocommerce_shop_loop' );
 		}
+
+		return $this;
 	}
 
 	/**
