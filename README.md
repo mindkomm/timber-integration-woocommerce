@@ -22,13 +22,6 @@ This integrations makes sense if you need to develop a highly customized WooComm
 - [Examples](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/examples.md)
 - [Mini Cart](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/mini-cart.md)
 
-## Roadmap
-
-Here are a couple features that are not yet integrated, but would be good contribution opportunities:
-
-- [ ] Add support for tag templates.
-- [ ] Add support for WooCommerce galleries. Maybe only documentation is needed?
-
 ## Todo
 
 - Add testing.
