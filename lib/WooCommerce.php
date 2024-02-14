@@ -162,12 +162,11 @@ class WooCommerce {
 		$template_name_twig = self::$subfolder . str_replace( '.php', '.twig', $template_name );
 
 		// Get loader and check if file exists.
-		// TODO: Is this now the proper way to initialize and use a loader? Should a new loader be initialized here or would it be better to initialize it in the constructor?
-		$caller = LocationManager::get_calling_script_dir( 1 );
-		$loader = new Loader( $caller );
+		$loader = new Loader();
 		$file   = $loader->choose_template( $template_name_twig );
 
-		// If a file was found, render that file with the given args, otherwise, return the default location.
+		// If a file was found, render that file with the given args, otherwise,
+		// return the default location.
 		if ( $file ) {
 			// Setup missing product global.
 			global $product, $post;
@@ -244,9 +243,7 @@ class WooCommerce {
 		$template_name_twig = self::$subfolder . "{$slug}-{$name}.twig";
 
 		// Get loader and check if file exists.
-		// TODO: Is this now the proper way to initialize and use a loader? Should a new loader be initialized here or would it be better to initialize it in the constructor?
-		$caller = LocationManager::get_calling_script_dir( 1 );
-		$loader = new Loader( $caller );
+		$loader = new Loader();
 		$file   = $loader->choose_template( $template_name_twig );
 
 		// Use WooCommerce’s default template if no Twig file was found.
