@@ -51,12 +51,9 @@ class WooCommerce {
 	 * @param array $args Array of arguments for the Integration.
 	 */
 	public static function init( $args = array() ) {
-		// Bailout in admin.
-		if ( is_admin() && ! wp_doing_ajax() ) {
-			return;
-		}
-
 		$self = new self();
+
+		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
 
 		$defaults = array(
 			'subfolder'        => 'woocommerce',
@@ -70,10 +67,14 @@ class WooCommerce {
 		self::$product_class    = $args['product_class'];
 		self::$product_iterator = $args['product_iterator'];
 
+		// Bailout in admin.
+		if ( is_admin() && ! wp_doing_ajax() ) {
+			return;
+		}
+
 		// For conditional functions like `is_woocommerce()` to work, we need to hook into the 'wp' action.
 		add_action( 'wp', array( $self, 'setup_classes' ), 20 );
 
-		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
 		add_filter( 'wc_get_template_part', array( $self, 'maybe_render_twig_template_part' ), 10, 3 );
 
 		// Fixes product global for singular product pages.
@@ -193,12 +194,33 @@ class WooCommerce {
 			 */
 			$context = apply_filters( 'timber/woocommerce/template/context', $context, $template_name, $template_name_twig, $product );
 
-			Timber::render( $file, $context );
+			$trace = wp_debug_backtrace_summary( null, 0, false );
 
 			/**
-			 * TODO: Will this work in all environments?
-			 * TODO: Is there a better way to do it than to pass an empty file to an include() function?
+			 * Check if the filter was called from within wc_get_template().
+			 *
+			 * We should only render the template if it was called from
+			 * wc_get_template().
+			 *
+			 * The `wc_get_template` filter is used in other
+			 * places as well. For example, if WooCommerce tries go get the
+			 * system status including a list of outdated templates. In that
+			 * case, we should return the full path of the template file.
 			 */
+			if ( in_array( 'wc_get_template', $trace, true ) ) {
+				Timber::render( $file, $context );
+
+				// Kind of a hack, because we can’t tell WooComerce to not load a template.
+				return __DIR__ . '/template_empty.php';
+			}
+
+			// Try to get the full path of the Twig template and return it.
+			$context = $loader->get_loader()->getSourceContext( $file );
+
+			if ( $context->getPath() !== '' ) {
+				return $context->getPath();
+			}
+
 			return __DIR__ . '/template_empty.php';
 		}
 
