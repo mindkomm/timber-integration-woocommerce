@@ -130,7 +130,7 @@ You can use the same for your Twig templates. You can add a `@version` tag to a 
  #}
 ```
 
-Just make sure you don’t put it on one line, but add it on a separate line with after the opening comment tag (`{#`). Otherwise WooCommerce won’t pick it up.
+Make sure you don’t put it on one line, but add it on a separate line with after the opening comment tag (`{#`). Otherwise WooCommerce won’t pick it up.
 
 **🚫 This will not work.**
 
@@ -138,6 +138,7 @@ Just make sure you don’t put it on one line, but add it on a separate line wit
 {# @version 3.4.0 #}
 ```
 
+Be aware that WooCommerce caches the system status in a transient named `wc_system_status_theme_info`. If you don’t see any templates in the system status, clearing the transient might help.
 
 ## Product global
 
