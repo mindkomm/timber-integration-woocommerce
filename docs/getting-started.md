@@ -43,13 +43,13 @@ if ( class_exists( 'WooCommerce' ) ) {
 }
 ```
 
-From here on, you should be good to go. The integration hooks into the [context](https://github.com/MINDKomm/timber-integration-woocommerce/blob/master/docs/usage.md#woocommerce-context) and adds features specific for WooCommerce. If you’re starting your theme from scratch, you’ll probably want to look at the following optional sections. You might also benefit if you already have Timber theme.
+From here on, you should be good to go. The integration hooks into the [context](https://github.com/mindkomm/timber-integration-woocommerce/blob/main/docs/usage.md#woocommerce-context) and adds features specific for WooCommerce. If you’re starting your theme from scratch, you’ll probably want to look at the following optional sections. You might also benefit if you already have Timber theme.
 
 ## Understanding how WooCommerce uses page-plugin.twig
 
 If you don’t add any [WooCommerce template files](https://docs.woocommerce.com/document/template-structure/) to your theme, WooCommerce will take the default templates that ship with the WooCommerce plugin. To display a WooCommerce site, it will use **header.php** as well as **footer.php** of your theme.
 
-In most Timber themes, the [**header.php**](https://github.com/timber/starter-theme/blob/master/theme/header.php) looks a little bit like magic. What it does in the context of WooCommerce is:
+In most Timber themes, the [**header.php**](https://github.com/timber/starter-theme/blob/main/theme/header.php) looks a little bit like magic. What it does in the context of WooCommerce is:
 
 - Save Timber’s context in a `$timberContext` global.
 - Start an output buffer with `ob_start()`. An output buffer doesn’t echo out anything, but saves everything in a buffer that you can retrieve later and save it in a variable.
@@ -108,7 +108,7 @@ The `$context` that you pass in here will be merged with the default Timber cont
 
 ## Optional: Copy default templates to your theme
 
-In the **defaults** folder of the integration, you’ll find [default Twig templates](https://github.com/MINDKomm/timber-integration-woocommerce/tree/master/defaults) for a couple of WooCommerce templates. They are examples for how you could translate templates from PHP to Twig.
+In the **defaults** folder of the integration, you’ll find [default Twig templates](https://github.com/mindkomm/timber-integration-woocommerce/tree/main/defaults) for a couple of WooCommerce templates. They are examples for how you could translate templates from PHP to Twig.
 
 You can copy the templates over to a **woocommerce** folder in the Twig views folder of your theme.
 
