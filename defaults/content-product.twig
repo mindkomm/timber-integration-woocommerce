@@ -1,6 +1,12 @@
+{##
+ # The template for displaying product content within loops
+ #
+ # @version 3.6.0
+ #}
+
 {# Ensure visibility. #}
 {% if product and product.is_visible() %}
-    <li {{ fn('wc_product_class') }}>
+    <li {{ fn('wc_product_class', '', product) }}>
         {##
          # Hook: woocommerce_before_shop_loop_item.
          #
