@@ -102,6 +102,12 @@ add_filter( 'timber/woocommerce/views_folder', function( $subfolder ) {
 {% do action('woocommerce_before_shop_loop') %}
 ```
 
+## 0.8.0 - 2024-02-14
+
+- Fixed a bug when Twig templates would be falsely rendered on the /system_status endpoint of the WooCommerce REST API.
+- Added the possibility to make the system status work with [outdated WooCommerce templates](https://github.com/mindkomm/timber-integration-woocommerce/blob/main/docs/usage.md#template-versions-and-system-status).
+- Changed Twig template loader to not load views from the caller directory.
+
 ## 0.7.1 - 2023-01-13
 
 - Fixed a bug when product global is not present on singular product pages.
@@ -121,7 +127,7 @@ add_filter( 'timber/woocommerce/views_folder', function( $subfolder ) {
 - Improved default **archive-product.twig** template and added default templates for **loop/loop-start.twig** and **loop/loop-end.twig**.
 - Added a default **checkout/form-checkout.twig** template.
 - Added a `$context` parameter to the `render_default_template()` function. When you pass a context to this function, it will be merged with Timber’s default context.
-- Added a `post` variable to the context in [Twig template partials](https://github.com/mindkomm/timber-integration-woocommerce/blob/master/docs/usage.md#automatic-twig-partial-selection).
+- Added a `post` variable to the context in [Twig template partials](https://github.com/mindkomm/timber-integration-woocommerce/blob/main/docs/usage.md#automatic-twig-partial-selection).
 - Fixed a bug when calling `Timber\Post::__construct()` messed up the `$product` global.
 - Fixed a compatibility issue with admin-ajax.
 
@@ -132,7 +138,7 @@ add_filter( 'timber/woocommerce/views_folder', function( $subfolder ) {
 ## 0.5.3 - 2020-07-29
 
 - Added Twig function `wc_action()` that can be used instead of `action()` when calling hooks from Twig. In Twig, you would use it like this: `{% do wc_action('woocommerce_single_product_summary') %}`. This was added to fix compatibility problems when hooks were used with parameters. (See #14, thanks @pascalknecht)
-- Added support for [Automatic Twig partial selection](https://github.com/mindkomm/timber-integration-woocommerce/blob/master/docs/usage.md#automatic-twig-partial-selection) when using `wc_get_template_part()`. You could only use `wc_get_template()` before. Now, you can use both.
+- Added support for [Automatic Twig partial selection](https://github.com/mindkomm/timber-integration-woocommerce/blob/main/docs/usage.md#automatic-twig-partial-selection) when using `wc_get_template_part()`. You could only use `wc_get_template()` before. Now, you can use both.
 - Fixed a bug when the `$post` global was not properly set when looping over products.
 - Updated default templates.
 - Updated internal repository folder structure.
