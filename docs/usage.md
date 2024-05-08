@@ -99,6 +99,47 @@ There’s a `$related_products` variable that is passed to the template. In your
 {% endfor %}
 ```
 
+### Template versions and system status
+
+WooCommerce has a system status page that will show you which version of the templates you’re using. You can access it through **WooCommerce → Status**. Look for the templates section. Read more about this in the [WooCommerce documentation about outdated templates](https://developer.woo.com/docs/how-to-fix-outdated-woocommerce-templates/).
+
+WooCommerce sets a `@version` tag in the DocBlock of the template that it compares with the version of your overwritten template. If the version of the template is outdated, WooCommerce will show you a warning in the system status.
+
+**archive-product.php**
+
+```php
+<?php
+/**
+ * The Template for displaying product archives, including the main shop page which is a post type archive
+ *
+ * …
+ *
+ * @see https://docs.woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 3.4.0
+ */
+```
+
+You can use the same for your Twig templates. You can add a `@version` tag to a DocBlock in your Twig file. The WooCommerce system status will pick it up.
+
+**archive-product.twig**
+
+```twig
+{#
+ # @version 3.4.0
+ #}
+```
+
+Make sure you don’t put it on one line, but add it on a separate line with after the opening comment tag (`{#`). Otherwise WooCommerce won’t pick it up.
+
+**🚫 This will not work.**
+
+```twig
+{# @version 3.4.0 #}
+```
+
+Be aware that WooCommerce caches the system status in a transient named `wc_system_status_theme_info`. If you don’t see any templates in the system status, clearing the transient might help.
+
 ## Product global
 
 When working with WooCommerce, you’re maybe used to the `$product` global. The integration handles that global variable for you. You don’t have to manually set up the product global in your loops. The product object is available under `post.product` in Twig. Here’s an example for the `get_attribute` object on `$product`.

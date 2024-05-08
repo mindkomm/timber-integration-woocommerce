@@ -3,7 +3,6 @@
 namespace Timber\Integrations\WooCommerce;
 
 use Timber\Loader;
-use Timber\LocationManager;
 use Timber\Timber;
 
 /**
@@ -35,11 +34,6 @@ class WooCommerce {
 	 * @param array $args Array of arguments for the Integration.
 	 */
 	public static function init() {
-		// Bailout in admin.
-		if ( is_admin() && ! wp_doing_ajax() ) {
-			return;
-		}
-
 		$self = new self();
 
 		/**
@@ -50,11 +44,17 @@ class WooCommerce {
 		self::$subfolder = apply_filters( 'theme/woocommerce/views_folder', 'woocommerce' );
 		self::$subfolder = trailingslashit( self::$subfolder );
 
+		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
+
+		// Bailout in admin.
+		if ( is_admin() && ! wp_doing_ajax() ) {
+			return;
+		}
+
 		// For conditional functions like `is_woocommerce()` to work, we need to
 		// hook into the 'wp' action.
 		add_action( 'wp', array( $self, 'setup_classes' ), 20 );
 
-		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
 		add_filter( 'wc_get_template_part', array( $self, 'maybe_render_twig_template_part' ), 10, 3 );
 
 		// Add WooCommerce context data to normal context.
@@ -98,42 +98,39 @@ class WooCommerce {
 		 *
 		 * The path is prepended with the subfolder and the PHP file extension
 		 * replaced with '.twig'.
-		 *
-		 * TODO: Is str_replace() too naive here?
 		 */
 		$template_name_twig = self::$subfolder . str_replace( '.php', '.twig', $template_name );
 
 		// Get loader and check if file exists.
-		// TODO: Is this now the proper way to initialize and use a loader? Should a new loader be initialized here or would it be better to initialize it in the constructor?
-		$caller = LocationManager::get_calling_script_dir( 1 );
-		$loader = new Loader( $caller );
+		$loader = new Loader();
 		$file   = $loader->choose_template( $template_name_twig );
 
-		// If a file was found, render that file with the given args. Otherwise,
+		// If a file was found, render that file with the given args, otherwise,
 		// return the default location.
 		if ( ! $file ) {
 			return $located;
 		}
-			// Setup missing product global.
-			global $product, $post;
 
-			if ( ! $product ) {
-				$product = wc_setup_product_data( $post );
-			}
+		// Setup missing product global.
+		global $product, $post;
+
+		if ( ! $product ) {
+			$product = wc_setup_product_data( $post );
+		}
 
 		// We can access the context here without performance loss, because it
 		// was already cached.
-			$context = Timber::context();
+		$context = Timber::context();
 
-			// Add the arguments for the WooCommerce template.
-			$context['wc'] = self::convert_objects( $args );
+		// Add the arguments for the WooCommerce template.
+		$context['wc'] = self::convert_objects( $args );
 
-			// Add current product to context.
-			if ( $product instanceof \WC_Product ) {
-				$context['product'] = $product;
-				$context['post_id'] = $product->get_id();
-				$context['post']    = Timber::get_post( $product->get_id() );
-			}
+		// Add current product to context.
+		if ( $product instanceof \WC_Product ) {
+			$context['product'] = $product;
+			$context['post_id'] = $product->get_id();
+			$context['post']    = Timber::get_post( $product->get_id() );
+		}
 
 		// Set up the post again. When we use Timber::context(), then setup()
 		// is called on singular post templates, which would cause WooCommerce
@@ -142,15 +139,39 @@ class WooCommerce {
 			$context['post']->setup();
 		}
 
-			/**
-			 * TODO: Add documentation for this.
-			 */
-			$context = apply_filters( 'timber/woocommerce/template/context', $context, $template_name, $template_name_twig, $product );
+		/**
+		 * TODO: Add documentation for this.
+		 */
+		$context = apply_filters( 'timber/woocommerce/template/context', $context, $template_name, $template_name_twig, $product );
 
+		$trace = wp_debug_backtrace_summary( null, 0, false );
+
+		/**
+		 * Check if the filter was called from within wc_get_template().
+		 *
+		 * We should only render the template if it was called with
+		 * wc_get_template().
+		 *
+		 * The `wc_get_template` filter is used in other places as well. For
+		 * example, if WooCommerce tries go get the system status including a
+		 * list of outdated templates. In that case, we should return the full
+		 * path of the template file.
+		 */
+		if ( in_array( 'wc_get_template', $trace, true ) ) {
 			Timber::render( $file, $context );
 
 			return __DIR__ . '/template_empty.php';
 		}
+
+		// Try to get the full path of the Twig template and return it.
+		$context = $loader->get_loader()->getSourceContext( $file );
+
+		if ( $context->getPath() !== '' ) {
+			return $context->getPath();
+		}
+
+		return __DIR__ . '/template_empty.php';
+	}
 
 	/**
 	 * Renders a Twig template instead of a PHP template when calling
@@ -170,9 +191,7 @@ class WooCommerce {
 		$template_name_twig = self::$subfolder . "{$slug}-{$name}.twig";
 
 		// Get loader and check if file exists.
-		// TODO: Is this now the proper way to initialize and use a loader? Should a new loader be initialized here or would it be better to initialize it in the constructor?
-		$caller = LocationManager::get_calling_script_dir( 1 );
-		$loader = new Loader( $caller );
+		$loader = new Loader();
 		$file   = $loader->choose_template( $template_name_twig );
 
 		// Use WooCommerce’s default template if no Twig file was found.

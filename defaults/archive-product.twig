@@ -1,8 +1,14 @@
+{##
+ # The Template for displaying product archives, including the main shop page which is a post type archive
+ #
+ # @version 3.4.0
+ #}
+
 {% extends 'base.twig' %}
 
 {% block content %}
     {##
-     # woocommerce_before_main_content hook.
+     # Hook: woocommerce_before_main_content.
      #
      # @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
      # @hooked woocommerce_breadcrumb - 20
@@ -52,7 +58,7 @@
 	    {{ fn('woocommerce_product_loop_end') }}
 
         {##
-         # woocommerce_after_shop_loop hook.
+         # Hook: woocommerce_after_shop_loop.
          #
          # @hooked woocommerce_pagination - 10
          #}
