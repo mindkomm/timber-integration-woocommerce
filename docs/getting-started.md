@@ -1,11 +1,3 @@
----
-title: "Installation"
-weight: 150
-menu:
-  main:
-    parent: "woocommerce"
----
-
 ## Prepare your theme
 
 ### Add theme support
@@ -39,7 +31,7 @@ From here on, you should be good to go. The integration hooks into the [context]
 
 If you don’t add any [WooCommerce template files](https://docs.woocommerce.com/document/template-structure/) to your theme, WooCommerce will take the default templates that ship with the WooCommerce plugin. To display a WooCommerce site, it will use **header.php** as well as **footer.php** of your theme.
 
-In most Timber themes, the [**header.php**](https://github.com/timber/starter-theme/blob/main/theme/header.php) looks a little bit like magic. What it does in the context of WooCommerce is:
+In most Timber themes, the [**header.php**](https://github.com/timber/starter-theme/blob/1.x/theme/header.php) looks a little bit like magic. What it does in the context of WooCommerce is:
 
 - Save Timber’s context in a `$timberContext` global.
 - Start an output buffer with `ob_start()`. An output buffer doesn’t echo out anything, but saves everything in a buffer that you can retrieve later and save it in a variable.

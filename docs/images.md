@@ -1,11 +1,3 @@
----
-title: "Images"
-weight: 300
-menu:
-  main:
-    parent: "woocommerce"
----
-
 You can work the image functionality that WooCommerce provides you, or you can display a product image like you would do it in every Timber theme, including all the image functionality (like resizing) you already know.
 
 ```twig

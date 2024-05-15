@@ -1,11 +1,3 @@
----
-title: "Installation"
-weight: 100
-menu:
-  main:
-    parent: "woocommerce"
----
-
 ## Installation
 
 The WooCommerce integration comes as a separate package. Before you install it, make sure that you’ve installed the [WooCommerce plugin](https://wordpress.org/plugins/woocommerce/).

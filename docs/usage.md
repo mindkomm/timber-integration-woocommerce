@@ -1,13 +1,3 @@
----
-title: "Working with the Integration"
-linktitle: "Usage"
-slug: "usage"
-weight: 200
-menu:
-  main:
-    parent: "woocommerce"
----
-
 ## Stay compatible
 
 When working with WooCommerce you’ll want to stay as compatible to WooCommerce as possible. If you stay compatible, it will be easier for you to update WooCommerce and your theme. Here are some (maybe opinionated) recommendations:

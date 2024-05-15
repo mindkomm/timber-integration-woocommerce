@@ -1,11 +1,3 @@
----
-title: "Examples"
-weight: 400
-menu:
-  main:
-    parent: "woocommerce"
----
-
 ## Change content output wrappers
 
 WooCommerce will wrap all content with its own wrappers through the `woocommerce_before_main_content` action that you can find both in your **archive-product.twig** as well as **single-product.twig**.
