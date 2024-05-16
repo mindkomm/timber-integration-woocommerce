@@ -37,7 +37,7 @@ class Product extends Post {
 	 *                       a class that inherits from WC_Product.
 	 * @return \Timber\Post
 	 */
-	public static function build( WP_Post $wp_post): self {
+	public static function build( WP_Post $wp_post): static {
 		$post = parent::build( $wp_post );
 
 		/**
