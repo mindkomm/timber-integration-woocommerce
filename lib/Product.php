@@ -54,10 +54,22 @@ class Product extends Post {
 			$product = wc_get_product( $post->ID );
 		}
 
+		$product = apply_filters_deprecated(
+			'timber/integration/woocommerce/product',
+			[ $product, $post ],
+			'1.1.0',
+			'timber/woocommerce/product'
+		);
+
 		/**
-		 * Filters the WooCommerce product
+		 * Filters the WooCommerce product.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param \WC_Product $product The WooCommerce product.
+		 * @param \WP_Post    $post    The WordPress post.
 		 */
-		$product = apply_filters( 'timber/integration/woocommerce/product', $product, $post );
+		$product = apply_filters( 'timber/woocommerce/product', $product, $post );
 
 		$post->product = $product;
 
