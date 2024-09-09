@@ -42,6 +42,7 @@ class WooCommerce {
 		 * @param string $subfolder Subfolder name.
 		 */
 		self::$subfolder = apply_filters( 'theme/woocommerce/views_folder', 'woocommerce' );
+		self::$subfolder = apply_filters( 'timber/woocommerce/views_folder', 'woocommerce' );
 		self::$subfolder = trailingslashit( self::$subfolder );
 
 		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
