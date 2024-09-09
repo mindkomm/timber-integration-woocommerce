@@ -115,14 +115,18 @@ You could either loosely add theme support and the initialization call for the i
 ```php
 <?php
 
+use Timber\Integrations\WooCommerce\WooCommerceIntegration;
+
 class WooCommerceTheme {
     /**
      * Inits all hooks.
      */
     public function init() {
-        if ( class_exists( 'WooCommerce' ) ) {
-            \Timber\Integrations\WooCommerce\WooCommerce::init();
-        }
+        add_filter( 'timber/integrations', function ( array $integrations ): array {
+            $integrations[] = new WooCommerceIntegration();
+        
+            return $integrations;
+        } );
 
         // Optional: Disable default WooCommerce image functionality.
         // Timber\Integrations\WooCommerce\WooCommerce::disable_woocommerce_images();
