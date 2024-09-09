@@ -36,12 +36,19 @@ class WooCommerce {
 	public static function init() {
 		$self = new self();
 
+		self::$subfolder = apply_filters_deprecated(
+			'theme/woocommerce/views_folder',
+			['woocommerce'],
+			'1.1.0',
+			'timber/woocommerce/views_folder'
+		);
+
 		/**
 		 * Filters the subfolder to use in the Twig template file folder.
 		 *
 		 * @param string $subfolder Subfolder name.
 		 */
-		self::$subfolder = apply_filters( 'theme/woocommerce/views_folder', 'woocommerce' );
+		self::$subfolder = apply_filters( 'timber/woocommerce/views_folder', 'woocommerce' );
 		self::$subfolder = trailingslashit( self::$subfolder );
 
 		add_filter( 'wc_get_template', array( $self, 'maybe_render_twig_template' ), 10, 3 );
