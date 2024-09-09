@@ -32,7 +32,7 @@
 
     {% if fn('woocommerce_product_loop') %}
         {#
-         # woocommerce_before_shop_loop hook.
+         # Hook: woocommerce_before_shop_loop.
          #
          # @hooked woocommerce_output_all_notices - 10
          # @hooked woocommerce_result_count - 20
@@ -50,6 +50,11 @@
 	             # calling `have_posts()`, we check if there are posts we can display.
 	             #}
 	            {% if fn('have_posts') %}
+                    {##
+                     # Hook: woocommerce_shop_loop.
+                     #}
+                    {% do action('woocommerce_shop_loop') %}
+
                     {{ fn('wc_get_template_part', 'content', 'product' ) }}
 	            {% endif %}
             {% endfor %}
