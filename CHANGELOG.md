@@ -1,5 +1,17 @@
 # Timber Integration for WooCommerce
 
+## [1.1.0](https://github.com/mindkomm/timber-integration-woocommerce/compare/1.0.1...v1.1.0) (2024-09-10)
+
+
+### Features
+
+* Add `timber/woocommerce/views_folder` filter ([4c0222c](https://github.com/mindkomm/timber-integration-woocommerce/commit/4c0222cc6376f174f61113a8cf233f91eda1ff18))
+
+
+### Bug Fixes
+
+* **docs:** Update Getting Started guide with recommended way of initializing the integration ([#45](https://github.com/mindkomm/timber-integration-woocommerce/issues/45)) ([4de815c](https://github.com/mindkomm/timber-integration-woocommerce/commit/4de815cdac06f6e648a6330c32eef077965c5c42))
+
 ## 1.0.0
 
 ### Breaking changes 💥
