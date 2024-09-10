@@ -1,5 +1,41 @@
 # Timber Integration for WooCommerce
 
+## [2.0.0](https://github.com/mindkomm/timber-integration-woocommerce/compare/v1.1.0...v2.0.0) (2024-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Deprecate `theme/woocommerce/views_folder` filter in favor of `timber/woocommerce/views_folder`
+* Deprecate timber/integration/woocommerce/product filter in favor of timber/woocommerce/product ([#50](https://github.com/mindkomm/timber-integration-woocommerce/issues/50))
+* Remove `woocommerce_shop_loop` hook call in `Product::setup()` to reduce side effects ([#48](https://github.com/mindkomm/timber-integration-woocommerce/issues/48))
+* Update minimum PHP version to 7.4
+* Add compatibility for Timber 2.x
+
+### Features
+
+* Add `timber/woocommerce/views_folder` filter ([4c0222c](https://github.com/mindkomm/timber-integration-woocommerce/commit/4c0222cc6376f174f61113a8cf233f91eda1ff18))
+* Deprecate `theme/woocommerce/views_folder` filter in favor of `timber/woocommerce/views_folder` ([ac58e4f](https://github.com/mindkomm/timber-integration-woocommerce/commit/ac58e4fc991ad79fa2057660c5be285d5af278d2))
+* Deprecate timber/integration/woocommerce/product filter in favor of timber/woocommerce/product ([#50](https://github.com/mindkomm/timber-integration-woocommerce/issues/50)) ([359eddb](https://github.com/mindkomm/timber-integration-woocommerce/commit/359eddbeec707b90ad4a7cd6fe4b2edf3ba9e458))
+* Remove `woocommerce_shop_loop` hook call in `Product::setup()` to reduce side effects ([#48](https://github.com/mindkomm/timber-integration-woocommerce/issues/48)) ([484e621](https://github.com/mindkomm/timber-integration-woocommerce/commit/484e6211d3b703626bce9daea7bbd00decf39f36))
+
+
+### Bug Fixes
+
+* Add compatibility for Timber 2.x ([5d7a5ea](https://github.com/mindkomm/timber-integration-woocommerce/commit/5d7a5ea0bc49d439ee7cd9d3979cdfa07494a187))
+* **docs:** Update Getting Started guide with recommended way of initializing the integration ([#45](https://github.com/mindkomm/timber-integration-woocommerce/issues/45)) ([4de815c](https://github.com/mindkomm/timber-integration-woocommerce/commit/4de815cdac06f6e648a6330c32eef077965c5c42))
+* Fix a bug when context didn’t contain a post for singular product templates ([1a2b3c8](https://github.com/mindkomm/timber-integration-woocommerce/commit/1a2b3c811e84c7f4daa3967dd76817a6bceda968))
+* Fix a compatibility bug with Timber 2.2.0 ([3fa43c8](https://github.com/mindkomm/timber-integration-woocommerce/commit/3fa43c893a8ff39edf8c7fa17770700f37c6c1e1))
+* Fix a typo ([9bfc96f](https://github.com/mindkomm/timber-integration-woocommerce/commit/9bfc96f0fe3ab8f8ed39a889f9edd5d79847f60b))
+* Fix documentation for 1.x ([1b964fa](https://github.com/mindkomm/timber-integration-woocommerce/commit/1b964fa7f24f90d81fae2b73ea553f40d8514fa8))
+* Remove args for the init function ([486766c](https://github.com/mindkomm/timber-integration-woocommerce/commit/486766cff5a12e95014fdd6c8a4f518e51a333f3))
+* Update minimum PHP version to 7.4 ([7fe7518](https://github.com/mindkomm/timber-integration-woocommerce/commit/7fe751878521e6d9bf527052a0176f1e693a982b))
+* Use proper integration init ([ee42a2b](https://github.com/mindkomm/timber-integration-woocommerce/commit/ee42a2bdd4cf02203b1094f5e54edd8ae3df464b))
+
+
+### Miscellaneous Chores
+
+* **1.x:** release 1.1.0 ([#47](https://github.com/mindkomm/timber-integration-woocommerce/issues/47)) ([ff6a3a6](https://github.com/mindkomm/timber-integration-woocommerce/commit/ff6a3a6f1ac5d2b8b374fd8b21ff84f583137e0e))
+
 ## [1.1.0](https://github.com/mindkomm/timber-integration-woocommerce/compare/1.0.1...v1.1.0) (2024-09-10)
 
 
