@@ -1,5 +1,25 @@
 # Timber Integration for WooCommerce
 
+## [2.0.0](https://github.com/mindkomm/timber-integration-woocommerce/compare/v1.1.0...v2.0.0) (2025-04-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Deprecate `theme/woocommerce/views_folder` filter in favor of `timber/woocommerce/views_folder`
+* Deprecate timber/integration/woocommerce/product filter in favor of timber/woocommerce/product ([#50](https://github.com/mindkomm/timber-integration-woocommerce/issues/50))
+* Remove `woocommerce_shop_loop` hook call in `Product::setup()` to reduce side effects ([#48](https://github.com/mindkomm/timber-integration-woocommerce/issues/48))
+
+### Features
+
+* Deprecate `theme/woocommerce/views_folder` filter in favor of `timber/woocommerce/views_folder` ([ac58e4f](https://github.com/mindkomm/timber-integration-woocommerce/commit/ac58e4fc991ad79fa2057660c5be285d5af278d2))
+* Deprecate timber/integration/woocommerce/product filter in favor of timber/woocommerce/product ([#50](https://github.com/mindkomm/timber-integration-woocommerce/issues/50)) ([359eddb](https://github.com/mindkomm/timber-integration-woocommerce/commit/359eddbeec707b90ad4a7cd6fe4b2edf3ba9e458))
+* Remove `woocommerce_shop_loop` hook call in `Product::setup()` to reduce side effects ([#48](https://github.com/mindkomm/timber-integration-woocommerce/issues/48)) ([484e621](https://github.com/mindkomm/timber-integration-woocommerce/commit/484e6211d3b703626bce9daea7bbd00decf39f36))
+
+
+### Bug Fixes
+
+* Fix bugs when templates are accessed in the WooCommerce status screen ([7988120](https://github.com/mindkomm/timber-integration-woocommerce/commit/79881205eacdbf0eabfe50c86596be6fcb16f536))
+
 ## [1.1.0](https://github.com/mindkomm/timber-integration-woocommerce/compare/1.0.1...v1.1.0) (2024-09-10)
 
 
