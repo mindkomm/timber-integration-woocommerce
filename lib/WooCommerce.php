@@ -3,6 +3,7 @@
 namespace Timber\Integrations\WooCommerce;
 
 use Timber\Loader;
+use Timber\Post;
 use Timber\Timber;
 
 /**
@@ -145,7 +146,7 @@ class WooCommerce {
 		// Set up the post again. When we use Timber::context(), then setup()
 		// is called on singular post templates, which would cause WooCommerce
 		// to set up the queried object as the $product global.
-		if ( $context['post'] instanceof \Timber\Post ) {
+		if ( ! empty( $context['post'] ) && $context['post'] instanceof Post ) {
 			$context['post']->setup();
 		}
 
@@ -229,7 +230,7 @@ class WooCommerce {
 		// Set up the post again. When we use Timber::context(), then setup()
 		// is called on singular post templates, which would cause WooCommerce
 		// to set up the queried object as the $product global.
-		if ( $context['post'] instanceof \Timber\Post ) {
+		if ( ! empty( $context['post'] ) && $context['post'] instanceof Post ) {
 			$context['post']->setup();
 		}
 
