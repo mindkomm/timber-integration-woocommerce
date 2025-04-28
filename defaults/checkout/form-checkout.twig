@@ -1,7 +1,7 @@
 {##
  # Checkout Form
  #
- # @version 3.5.0
+ # @version 9.4.0
  #}
 {% do action('woocommerce_before_checkout_form', wc.checkout) %}
 
@@ -19,6 +19,7 @@
         class="checkout woocommerce-checkout"
         action="{{ fn('wc_get_checkout_url')|e('esc_url') }}"
         enctype="multipart/form-data"
+        aria-label="{{ __( 'Checkout', 'woocommerce' )|e('html_attr') }}"
     >
         {% if wc.checkout.get_checkout_fields() %}
             {% do action('woocommerce_checkout_before_customer_details') %}
